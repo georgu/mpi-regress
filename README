@@ -1,0 +1,27 @@
+
+#------------------------------------------------------
+# how to prepare a regression test:
+#------------------------------------------------------
+
+	regression base dir is regbase (~/work/mpi/regress/)
+
+	create a new directory
+	copy grd files to dir
+	copy str files to dir
+	goto dir
+	link input directory
+	optionally link strs directory
+	link Makefile and run_test.sh to the ones in regbase/progs
+	copy settings.sh from regbase/progs to . and customize
+	check if time vars (itend,idtdbg) have correct format in STR file
+	try "make regress_short"
+
+#------------------------------------------------------
+# how to insert regression test into automatic test:
+#------------------------------------------------------
+
+	make link from this directory to new dir
+	insert link name in run-regress.sh
+
+#------------------------------------------------------
+
