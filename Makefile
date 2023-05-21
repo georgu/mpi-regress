@@ -1,7 +1,8 @@
 
 DIR = regress-mpi
 
-DIST = README Makefile run-regress.sh \
+SPECIAL = README Makefile License
+DIST = $(SPECIAL) run-regress.sh \
 	progs/Makefile progs/run_test.sh progs/test_partition.sh
 
 #----------------------------------------------------------
