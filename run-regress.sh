@@ -54,7 +54,7 @@ RegressRun()
   if [ $? -ne 0 ]; then
     errors=$(( errors + 1 ))
     cat compare.log
-    echo "*** error comparing simulation $what" | tee -a $LOG
+    echo "*** errors comparing simulation $what" | tee -a $LOG
     if [ $stop_on_error = "YES" ]; then
       cat $LOG
       exit 1
@@ -202,7 +202,7 @@ echo "==============================================="
 if [ $errors -eq 0 ]; then
   echo "all regression tests were successful..." | tee -a $LOG
 else
-  echo "$errors errors found in regression tests..." | tee -a $LOG
+  echo "errors found in $errors regression tests..." | tee -a $LOG
 fi
 
 echo "==============================================="

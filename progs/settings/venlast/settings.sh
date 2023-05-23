@@ -13,8 +13,7 @@
   forcings="data"
   str_regress="mpitest008na.str"
   str_regress="mpitest008.str"
-
   #str_regress="test02.str"
-  #epsdiff=0
+  epsdiff=0
   #epsdiff=0.000001
 

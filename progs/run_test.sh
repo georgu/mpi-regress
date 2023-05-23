@@ -43,6 +43,7 @@ npmax=16
 #npmax=11
 #npmax=4
 npmax=32
+npmax=8
 
 hostname=$( hostname )
 repodir="$HOME/georg/work/shyfem_repo"
@@ -55,6 +56,7 @@ shydir_serial="$repodir/shyfem"
 actdir=$( pwd )
 mpi_command="mpirun"
 mpi_command="mpirun --oversubscribe"
+[ $hostname = "stream" ] && mpi_command="mpirun"
 check_debug=$shydir_mpi/fem3d/check_shympi_debug
 
 stop_on_run_error="YES"
@@ -438,8 +440,8 @@ RunShyfem()
     options="-mpi $options"
     command="$mpi_command -np $np $repodir/shyfem-mpi/bin/shyfem $options $str"
   fi
-  echo "$command" > command.sh
-  chmod +x command.sh
+  echo "$command" > run-command.sh
+  chmod +x run-command.sh
   adir=$( pwd )
   #echo "    running as: $command"
   $command &>> logfile.txt
@@ -596,6 +598,8 @@ CompareDbg()
     [ $maxdiff = "YES" ] && option="$option -maxdiff $epsdiff"
     [ -n "$epsdiff" ] && option="$option -maxdiff $epsdiff"
     command="$check_debug $option $dir1/$file $dir2/$file"
+    echo "$command" > $dir2/dbg-command.sh
+    chmod +x $dir2/dbg-command.sh
     $command > auxlog.txt
     status=$?
     if [ $verbose = "YES" -o $status -ne 99 ]; then
@@ -665,7 +669,7 @@ CompareSims()
     (( ndir += 1 ))
     dir="mpisim.$np"
     echo "----------------------------------------"
-    echo "handling compare in directory $dir"
+    echo "comparing $what in directory $dir"
     echo "----------------------------------------"
     PrepareAllFiles $dir
     if [ -n "$errortext" ]; then
@@ -694,14 +698,16 @@ CompareSims()
 
 CleanSims()
 {
-  echo "cleaning in main dir"
+  local basedir=$( pwd )
+
+  echo "cleaning in $basedir"
   make cleanall > /dev/null
 
   for np in $nprocs
   do
     dir="mpisim.$np"
     [ ! -d $dir ] && continue
-    echo "cleaning in dir $dir"
+    [ $verbose = "YES" ] && echo "cleaning in basedir subdirectory $dir"
     cd $dir
     make cleanall > /dev/null
     cd ..
