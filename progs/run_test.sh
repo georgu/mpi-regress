@@ -2,6 +2,21 @@
 #
 # runs and compares shyfem in serial and mpi mode
 #
+#
+# RunSims
+#	RunShyfem $np
+#		shyfem
+#
+# CompareSims
+#	CompareShyfem $olddir $dir
+#		HandleCompareFiles $ext $dir1 $dir2
+#			PrepareFiles $ext $dir1
+#			PrepareFiles $ext $dir2
+#			CompareFiles $ext $dir1 $dir2
+#				diff $file1 $file2
+#		...
+#		HandleCompareDbg $dir1 $dir2
+#
 #----------------------------------------------
 
 what=unknown
@@ -25,8 +40,9 @@ nptype="npmax"
 #npmin=11
 #npmax=20
 npmax=16
-npmax=11
-npmax=4
+#npmax=11
+#npmax=4
+npmax=32
 
 hostname=$( hostname )
 repodir="$HOME/georg/work/shyfem_repo"
@@ -277,6 +293,19 @@ LinkForcing()
   done
 }
 
+DeleteFile()
+{
+  local file=$1
+  [ -f $file ] && rm -f $file
+}
+
+CopyFile()
+{
+  local file=$1
+  local dir=$2
+  [ -f $file ] && cp $file $dir
+}
+
 CopyFiles()
 {
   local dir=$1
@@ -286,9 +315,10 @@ CopyFiles()
   cp $strdir/$str $dir
   cp *.bas $dir
   cp *.grd $dir
-  [ -f gotmturb.nml ] && cp gotmturb.nml $dir
-  [ -f Makefile ] && cp Makefile $dir
-  [ -f settings.sh ] && cp settings.sh $dir
+  CopyFile gotmturb.nml $dir
+  CopyFile Makefile $dir
+  CopyFile settings.sh $dir
+  CopyFile boxes.txt $dir
   [ -n "$cpfiles" ] && cp $cpfiles $dir
 }
 
@@ -368,7 +398,7 @@ RunSims()
   do
     dir="mpisim.$np"
     [ $np -ne 0 ] && echo "---------------------------"
-    echo "  running $str with $np in $dir"
+    echo "  running $str of $what with np=$np in $dir"
     (( ndir += 1 ))
     mkdir -p $dir
     CopyFiles $dir
@@ -398,6 +428,8 @@ RunShyfem()
   [ $debug = "YES" ] && options="-debout -mpi_debug"
   #echo "options are $options"
 
+  DeleteFile running_shyfem_ok.log
+
   if [ $np -eq 0 ]; then
     command="$repodir/shyfem/bin/shyfem $options $str"
   elif [ $np -eq 1 ]; then
@@ -409,10 +441,11 @@ RunShyfem()
   echo "$command" > command.sh
   chmod +x command.sh
   adir=$( pwd )
-  echo "    running as: $command"
+  #echo "    running as: $command"
   $command &>> logfile.txt
   status=$?
   #echo "exit code = $status"
+
   if [ $status -ne 99 ]; then
     cat logfile.txt
     (( error_run += 1 ))
@@ -420,6 +453,7 @@ RunShyfem()
     echo "*** number of processes: $np"
     echo "*** executing command: $command"
     echo "*** running in directory: $adir"
+    echo "*** running with command: $command"
     echo "*** writing to $LOG and $LLOG"
     echo "*** error running with np = $np" >> $LOG
     echo "*** error running with np = $np" >> $LLOG
@@ -428,15 +462,48 @@ RunShyfem()
     else
       return
     fi
+  else
+    touch running_shyfem_ok.log
+    timeline=$( grep "TIME TO SOLUTION (CPU)  =" logfile.txt )
+    echo "   $timeline"
   fi
-  timeline=$( grep "MPI_TIME =" logfile.txt )
-  timeline=$( grep "TIME TO SOLUTION (CPU)  =" logfile.txt )
-  echo "   $timeline"
 }
 
 #----------------------------------------------
 #----------------------------------------------
 #----------------------------------------------
+
+PrepareAllFiles()
+{
+  local dir=$1
+
+  errortext=""
+
+  errors=0
+  DeleteFile files_prepared.log
+
+  if [ ! -f $dir/running_shyfem_ok.log ]; then
+    errortext="  *** no valid run in $dir"
+    (( errorall += 1 ))
+    return
+  fi
+
+  echo "  preparing data files in $dir"
+
+  if [ $chkonlydbg = "NO" ]; then
+    PrepareFiles "ext" $dir
+    PrepareFiles "hydro.shy" $dir
+    PrepareFiles "conz.shy" $dir
+    PrepareFiles "ts.shy" $dir
+  fi
+
+  if [ $errors -gt 0 ]; then
+    errortext="  *** errors preparing files in $dir"
+    (( errorall += 1 ))
+  else
+    touch files_prepared.log
+  fi
+}
 
 PrepareFiles()
 {
@@ -444,13 +511,10 @@ PrepareFiles()
   local dir=$2
   local file=$simname.$ext
 
-  echo "preparing $ext $dir $file"
+  [ $verbose = "YES" ] && echo "    preparing $file with extension $ext in $dir"
 
   cd $dir
 
-  #make clean &>> logfile.txt
-  #nf1=$( ls *.[23]d.[0-9]* 2> /dev/null | wc -l )
-  #echo "  preparing file $file with extension $ext"
   if [ -f $file ]; then
     if [ $ext = "ext" ]; then
       shyelab -split $file &>> logfile.txt
@@ -460,33 +524,42 @@ PrepareFiles()
     tail -1 logfile.txt | grep 'error stop'
     if [ $? -eq 0 ]; then
       errortext="*** errors preparing files in $dir for $file"
+      echo "$errortext"
+      (( errors += 1 ))
       files=""
-      return
     else
       files=$( ls *.[23]d.[0-9]* )
     fi
   else
-    #echo "  no file $file available... skipping"
     files=""
   fi
-
-  #nf2=$( echo $files | wc -w )
-  #echo "files before: $nf1"
-  #echo "files after : $nf2"
 
   cd ..
 }
 
 CompareFiles()
 {
-  local ext=$1
-  local dir1=$2
-  local dir2=$3
-  local file=$simname.$ext
+  local dir1=$1
+  local dir2=$2
 
-  echo "    comparing $file files..."
   error=0
   nfile=0
+
+  cd $dir1
+  files1=$( ls *.[23]d.[0-9]* )
+  cd ..
+  cd $dir2
+  files2=$( ls *.[23]d.[0-9]* )
+  cd ..
+
+  if [ "$files1" != "$files2" ]; then
+    echo "files in $dir1 and $dir2 are different"
+    (( error += 1 ))
+    files=""
+  else
+    files=$files1
+  fi
+
   [ -f auxlog.txt ] && rm -f auxlog.txt
   for file in $files
   do
@@ -503,39 +576,10 @@ CompareFiles()
   done
   [ $quiet = "NO" -a -f auxlog.txt ] && cat auxlog.txt
   [ $error -gt 0 ] && errortext="error comparing files"
-  echo "    $nfile files compared - errors found: $error"
+  echo "  $nfile data files compared - errors found: $error"
 }
 
-HandleCompareFiles()
-{
-  local ext=$1
-  local dir1=$2
-  local dir2=$3
-
-  errortext=""
-
-  PrepareFiles $ext $dir1
-  files1=$files
-  [ "$errortext" != "" ] && (( error_compare += 1 )) && return
-
-  PrepareFiles $ext $dir2
-  files2=$files
-  [ "$errortext" != "" ] && (( error_compare += 1 )) && return
-
-  if [ "$files1" != "$files2" ]; then
-    echo "files1:"
-    echo "$files1"
-    echo "files2:"
-    echo "$files2"
-    echo $errortext
-    [ "$errortext" != "" ] && (( error_compare += 1 )) && return
-  fi
-
-  CompareFiles $ext $dir1 $dir2
-  [ -n "$errortext" ] && (( error_compare += 1 )) && return
-}
-
-HandleCompareDbg()
+CompareDbg()
 {
   local dir1=$1
   local dir2=$2
@@ -552,22 +596,23 @@ HandleCompareDbg()
     [ $maxdiff = "YES" ] && option="$option -maxdiff $epsdiff"
     [ -n "$epsdiff" ] && option="$option -maxdiff $epsdiff"
     command="$check_debug $option $dir1/$file $dir2/$file"
-    echo "    comparing as: $command"
-    #$check_debug $option $dir1/$file $dir2/$file > auxlog.txt
     $command > auxlog.txt
     status=$?
-    [ $quiet = "NO" ] && cat auxlog.txt
+    if [ $verbose = "YES" -o $status -ne 99 ]; then
+      echo "   comparing dbg as: $command"
+      cat auxlog.txt
+    fi
     if [ $status -eq 99 ]; then
-      echo "    2 files compared - errors found: 0"
+      echo "  2 dbg files compared - errors found: 0"
     elif [ $status -eq 0 ]; then
-      echo "    2 files compared - generic error"
+      echo "  2 dbg files compared - generic error"
       error=1
     else
-      echo "    2 files compared - errors found: $status"
+      echo "  2 dbg files compared - errors found: $status"
       error=$status
     fi
   else
-    echo "    0 files compared - errors found: 0"
+    echo "  0 dbg files compared - errors found: 0"
   fi
 
   (( error_compare += error ))
@@ -578,52 +623,29 @@ CompareShyfem()
   dir1=$1
   dir2=$2
 
-  echo "----------------------------------------"
-  echo "comparing directories $dir1 and $dir2"
-  echo "----------------------------------------"
+  #echo "----------------------------------------"
+  echo "  comparing directories $dir1 and $dir2"
+  #echo "----------------------------------------"
 
-  [ -z "$dir2" ] && echo "directories are missing..." && exit 1
+  [ -z "$dir1" ] && echo "directory $dir1 is missing..." && exit 1
+  [ -z "$dir2" ] && echo "directory $dir2 is missing..." && exit 1
 
   error_compare=0
 
   #--------------------------------------------
 
   if [ $chkonlydbg = "NO" ]; then
-
-  #--------------------------------------------
-
-  ext="ext"
-  HandleCompareFiles $ext $dir1 $dir2
-
-  #--------------------------------------------
-
-  ext="hydro.shy"
-  HandleCompareFiles $ext $dir1 $dir2
-
-  #--------------------------------------------
-
-  ext="conz.shy"
-  HandleCompareFiles $ext $dir1 $dir2
-
-  #--------------------------------------------
-
-  ext="ts.shy"
-  HandleCompareFiles $ext $dir1 $dir2
-
-  #--------------------------------------------
-
+    CompareFiles $dir1 $dir2
   fi
 
-  #--------------------------------------------
-
-  HandleCompareDbg $dir1 $dir2
+  CompareDbg $dir1 $dir2
 
   #--------------------------------------------
 
   if [ $error_compare -ne 0 ]; then
-    echo "    *** a total of $error_compare errors found"
-    echo "*** error comparing between $oldnp - $np" >> $LOG
-    echo "*** error comparing between $oldnp - $np" >> $LLOG
+    echo "  *** a total of $error_compare errors found"
+    echo "*** error comparing between $firstnp - $np" >> $LOG
+    echo "*** error comparing between $firstnp - $np" >> $LLOG
     (( errorall += error_compare ))
   fi
 }
@@ -635,18 +657,25 @@ CompareSims()
   ndir=0
   error=0
   errorall=0
-  olddir=
-  oldnp=
+  firstdir=
+  firstnp=
+
   for np in $nprocs
   do
     (( ndir += 1 ))
     dir="mpisim.$np"
-    if [ -n "$olddir" ]; then
-      CompareShyfem $olddir $dir
-      #[ $error -ne 0 ] && return
+    echo "----------------------------------------"
+    echo "handling compare in directory $dir"
+    echo "----------------------------------------"
+    PrepareAllFiles $dir
+    if [ -n "$errortext" ]; then
+      echo "$errortext"
+      continue
+    elif [ -n "$firstdir" ]; then
+      CompareShyfem $firstdir $dir
     fi
-    olddir=$dir
-    oldnp=$np
+    [ -z "$firstdir" ] && firstdir=$dir		#this is first good dir
+    [ -z "$firstnp" ] && firstnp=$np		#this is first good np
   done
 
   echo "----------------------------------------"
@@ -657,7 +686,6 @@ CompareSims()
   if [ $errorall -ne 0 ]; then
     cat $LLOG
   fi
-  #exit $errorall
 }
 
 #----------------------------------------------

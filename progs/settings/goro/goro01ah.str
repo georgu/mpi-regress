@@ -19,6 +19,7 @@ $para
         itanf = 0
 	itend = 3600
 	idtdbg = 300
+	idtbox = 300
 
         itmout = '1997-11-01::12:00:00' idtout = '1h'
         itmflx = '1997-11-01::12:00:00' idtflx = '1h'

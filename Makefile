@@ -40,6 +40,9 @@ collect:
 distribute:
 	./run-regress.sh distribute
 
+diff:
+	@cd progs/settings; ./diff.sh
+
 partition:
 	./run-regress.sh partition
 
