@@ -1,0 +1,10 @@
+
+23.05.2023
+	in subdry, setznv loop over ie_mpi
+	corrects error in marmenor
+	corrects also error in medi2d (np=28)
+
+24.05.2023
+	in newexpl.f, momentum_viscous_stability() must run over nel_unique
+	corrects error of differing time steps
+
