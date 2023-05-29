@@ -8,3 +8,27 @@
 	in newexpl.f, momentum_viscous_stability() must run over nel_unique
 	corrects error of differing time steps
 
+24.05.2023
+	regession test up to 32 processors
+		running regression test medimms
+		*** error running with np = 18
+		running regression test vistula
+		*** error running with np = 11
+		running regression test goro
+		*** error running with np = 18
+
+	regession test up to 64 processors
+		running regression test medimms
+		*** error running with np = 18		kant list
+		running regression test vistula
+		*** error running with np = 11		partition
+		*** error running with np = 51		tripple neighbor
+		running regression test marmenor
+		*** error running with np = 48		tripple neighbor
+		*** error running with np = 61		ckbnds: internal error
+		*** error running with np = 63		ckbnds: internal error
+		running regression test goro
+		*** error running with np = 18		tripple neighbor
+		*** error running with np = 49		make_links: aux list
+
+

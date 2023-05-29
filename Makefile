@@ -31,6 +31,9 @@ regress_long:
 regress_short:
 	./run-regress.sh short
 
+regress_short_bg:
+	nohup ./run-regress.sh short > bg_log.log 2>&1 &
+
 info:
 	./run-regress.sh info
 
