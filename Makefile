@@ -12,6 +12,8 @@ default:
 	@echo "  regress             runs default regression test (short)"
 	@echo "  regress_long        runs long regression test"
 	@echo "  regress_short       runs short regression test"
+	@echo "  regress_long_bg     runs long regression test in background"
+	@echo "  regress_short_bg    runs short regression test in background"
 	@echo "  info                info on simulations"
 	@echo "  collect             collects essential files from subdirs"
 	@echo "  distribute          distributes essential files to subdirs"
@@ -28,11 +30,14 @@ regress:
 regress_long:
 	./run-regress.sh long
 
+regress_long_bg:
+	nohup ./run-regress.sh long > bg_long.log 2>&1 &
+
 regress_short:
 	./run-regress.sh short
 
 regress_short_bg:
-	nohup ./run-regress.sh short > bg_log.log 2>&1 &
+	nohup ./run-regress.sh short > bg_short.log 2>&1 &
 
 info:
 	./run-regress.sh info
