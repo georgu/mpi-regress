@@ -43,7 +43,8 @@ npmax=16
 #npmax=11
 #npmax=4
 npmax=32
-npmax=8
+npmax=64
+#npmax=8
 
 hostname=$( hostname )
 repodir="$HOME/georg/work/shyfem_repo"

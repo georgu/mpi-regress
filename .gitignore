@@ -9,3 +9,5 @@ vistula
 vistula-restart
 regression.log
 .bash_eternal_history
+.*.swp
+*.log
