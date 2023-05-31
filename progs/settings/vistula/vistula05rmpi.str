@@ -30,7 +30,7 @@ $para
 	href = 0.0
 
 	ampar = 0.60   azpar = 0.60
-	atpar = 0.2    adpar = 0.2   aapar = 0.0
+	atpar = 1.0    adpar = 1.0   aapar = 1.0
 	ahpar = 0.2    idhtyp = 2
 
 	date = 1998

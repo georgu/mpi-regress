@@ -12,9 +12,11 @@ default:
 	@echo "  regress             runs default regression test (short)"
 	@echo "  regress_long        runs long regression test"
 	@echo "  regress_short       runs short regression test"
+	@echo "  partition           runs regression only on partitioning"
 	@echo "  info                info on simulations"
 	@echo "  collect             collects essential files from subdirs"
 	@echo "  distribute          distributes essential files to subdirs"
+	@echo "  diff                looks for differences in settings and str"
 	@echo "  link                links Makefile, run_test.sh to progs"
 	@echo "  clean               cleans log files"
 	@echo "  cleanall            also cleans regress dirs"
@@ -31,6 +33,9 @@ regress_long:
 regress_short:
 	./run-regress.sh short
 
+partition:
+	./run-regress.sh partition
+
 info:
 	./run-regress.sh info
 
@@ -42,9 +47,6 @@ distribute:
 
 diff:
 	@cd progs/settings; ./diff.sh
-
-partition:
-	./run-regress.sh partition
 
 link:
 	./run-regress.sh link

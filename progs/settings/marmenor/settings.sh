@@ -14,5 +14,5 @@
   forcings="input"
   str_regress="mmn11a.str"
   epsdiff=0
-  epsdiff=0.000001
+  #epsdiff=0.000001
 
