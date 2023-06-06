@@ -31,4 +31,41 @@
 		*** error running with np = 18		tripple neighbor
 		*** error running with np = 49		make_links: aux list
 
+29.05.2023
+	regression test long:
+		run vistula-restart
+		compare medi2d 8
+		* run vistula 0, 1, ...
+		compare venlast 5
+		* compare marmenor 2
+		* run goro 5
+		compare goro 10 17 19 21
+
+	bug fix in subboxa.f -> all section arrays are dimensioned the same
+	this solves run error in goro
+	run error in vistula: instability because of atpar, adpar, aapar /= 1
+	...solved
+
+31.05.2023
+	in conzstab, use ie_mpi, run over nkn_unique (bug fix)
+	solves compare problem of marmenor (sindex is the same)
+
+01.06.2023
+	regession test up to 24 processors
+		running regression test vistula-restart
+		*** error running simulation vistula-restart
+		running regression test medimms
+		*** error running with np = 18
+		comparing regression test medi2d
+		*** error comparing between 0 - 8
+		...
+		running regression test vistula
+		*** error running with np = 11
+		comparing regression test marmenor
+		*** error comparing between 0 - 6
+		...
+		running regression test goro
+		*** error running with np = 18
+	look at medi2d (8), marmenor (6), vistula-restart
+
 

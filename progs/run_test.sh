@@ -44,7 +44,6 @@ npmax=16
 #npmax=4
 npmax=32
 npmax=64
-#npmax=8
 
 hostname=$( hostname )
 repodir="$HOME/georg/work/shyfem_repo"
@@ -486,7 +485,9 @@ PrepareAllFiles()
   DeleteFile files_prepared.log
 
   if [ ! -f $dir/running_shyfem_ok.log ]; then
-    errortext="  *** no valid run in $dir"
+    errortext="  *** no valid run of $what in $dir"
+    echo "$errortext" >> $LOG
+    echo "$errortext" >> $LLOG
     (( errorall += 1 ))
     return
   fi
@@ -549,10 +550,10 @@ CompareFiles()
   nfile=0
 
   cd $dir1
-  files1=$( ls *.[23]d.[0-9]* )
+  files1=$( ls *.[23]d.[0-9]* 2> /dev/null )
   cd ..
   cd $dir2
-  files2=$( ls *.[23]d.[0-9]* )
+  files2=$( ls *.[23]d.[0-9]* 2> /dev/null )
   cd ..
 
   if [ "$files1" != "$files2" ]; then
@@ -587,6 +588,9 @@ CompareDbg()
   local dir1=$1
   local dir2=$2
 
+  dbglog=$PWD/auxlog.txt
+  [ -f $dbglog ] && rm -f $dbglog
+
   error=0
   file=$simname.dbg
   if [ -f $dir1/$file ]; then
@@ -598,14 +602,18 @@ CompareDbg()
     [ $summary = "YES" ] && option="$option -summary"
     [ $maxdiff = "YES" ] && option="$option -maxdiff $epsdiff"
     [ -n "$epsdiff" ] && option="$option -maxdiff $epsdiff"
-    command="$check_debug $option $dir1/$file $dir2/$file"
-    echo "$command" > $dir2/dbg-command.sh
-    chmod +x $dir2/dbg-command.sh
-    $command > auxlog.txt
+
+    cd $dir2
+    command="$check_debug $option ../$dir1/$file $file"
+    echo "$command" > dbg-command.sh
+    chmod +x dbg-command.sh
+    $command > $dbglog
     status=$?
+    cd ..
+
     if [ $verbose = "YES" -o $status -ne 99 ]; then
       echo "   comparing dbg as: $command"
-      cat auxlog.txt
+      cat $dbglog
     fi
     if [ $status -eq 99 ]; then
       echo "  2 dbg files compared - errors found: 0"
@@ -687,8 +695,9 @@ CompareSims()
   echo "finished comparing directories"
   echo "----------------------------------------"
 
-  echo "    $ndir directories compared - errors found: $errorall"
+  echo "    $ndir directories of $what compared - errors found: $errorall"
   if [ $errorall -ne 0 ]; then
+    echo "error summary:"
     cat $LLOG
   fi
 }

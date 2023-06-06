@@ -11,6 +11,9 @@ STR = $(str_regress)
 BASIN = $(basins)
 SHYDIR = $(HOME)/georg/work/shyfem_repo
 
+COMPARE_OPTIONS = -nodiff -nostop
+COMPARE_OPTIONS = -nodiff -chkonlydbg
+
 ifeq ("$(wildcard $(SHYDIR))","")
   $(error "Directory does not exist: $(SHYDIR)")
 else
@@ -48,10 +51,10 @@ cleanrun:
 compare: compare_no_summary
 
 compare_summary:
-	./run_test.sh -compare -nodiff -nostop -summary
+	./run_test.sh -compare -summary $(COMPARE_OPTIONS)
 
 compare_no_summary:
-	./run_test.sh -compare -nodiff -nostop
+	./run_test.sh -compare $(COMPARE_OPTIONS)
 
 compare_full:
 	./run_test.sh -compare 
