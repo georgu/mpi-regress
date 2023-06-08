@@ -68,4 +68,12 @@
 		*** error running with np = 18
 	look at medi2d (8), marmenor (6), vistula-restart
 
+05.06.2023
+	solved problem for restart -> cannot compare zov, fxv, fyv
+	these variables after a restart are not available
+
+07.06.2023
+	solved problem for marmenor
+	results differed with tripple_point and more loops in hydro
+	tripple point used utlnv, instead utlov -> fixed
 

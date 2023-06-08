@@ -33,12 +33,14 @@ regress_long:
 	./run-regress.sh long
 
 regress_long_bg:
+	@echo "running in background - log in bg_long.log"
 	nohup ./run-regress.sh long > bg_long.log 2>&1 &
 
 regress_short:
 	./run-regress.sh short
 
 regress_short_bg:
+	@echo "running in background - log in bg_short.log"
 	nohup ./run-regress.sh short > bg_short.log 2>&1 &
 
 partition:
