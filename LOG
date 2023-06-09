@@ -88,3 +88,7 @@
 		*** error running with np = 18
 	same errors in long and short
 
+09.06.2023
+	error on tripple points fixed
+	elements were on boundary - do not treat
+
