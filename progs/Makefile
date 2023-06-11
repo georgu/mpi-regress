@@ -62,6 +62,7 @@ compare_full:
 info:
 	./run_test.sh -info 
 
+link: link_exes
 link_exes:
 	ln -fs $(SHYDIR)/shyfem/bin/shyfem shyfem
 	ln -fs $(SHYDIR)/shyfem-mpi/bin/shyfem shyfem-mpi

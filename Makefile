@@ -77,6 +77,7 @@ cleanall: clean
 	-rm -f part_error[12].grd
 	-rm -f regression.log
 	-rm -f *.zip
+	-rm -f *.tar.gz
 
 cleantotal: cleanall
 
