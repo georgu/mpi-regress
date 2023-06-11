@@ -77,3 +77,11 @@
 	results differed with tripple_point and more loops in hydro
 	tripple point used utlnv, instead utlov -> fixed
 
+10.06.2023
+	new errors running with 128 procs
+bg_long.log:STOP error stop : flx_init
+bg_long.log:STOP error stop ckbnds: internal error
+bg_long.log:STOP error stop fix_kant: internal error (1)
+bg_long.log:STOP error stop handle_partition: partitioning error
+bg_long.log:STOP error stop make_links: internal error (2)
+

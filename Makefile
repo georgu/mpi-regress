@@ -76,9 +76,9 @@ cleanall: clean
 	./run-regress.sh clean
 	-rm -f part_error[12].grd
 	-rm -f regression.log
+	-rm -f *.zip
 
-cleantotal: clean
-	./run-regress.sh clean
+cleantotal: cleanall
 
 dist:
 	zip -r $(DIR)-dist.zip $(DIST) progs/settings/*

@@ -45,6 +45,7 @@ npmax=16
 #npmax=4
 npmax=32
 npmax=64
+npmax=128
 
 hostname=$( hostname )
 repodir="$HOME/georg/work/shyfem_repo"
@@ -58,6 +59,7 @@ actdir=$( pwd )
 mpi_command="mpirun"
 mpi_command="mpirun --oversubscribe"
 [ $hostname = "stream" ] && mpi_command="mpirun"
+[ $hostname = "storm" ] && mpi_command="mpirun"
 check_debug=$shydir_mpi/fem3d/check_shympi_debug
 
 stop_on_run_error="YES"

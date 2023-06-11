@@ -146,6 +146,9 @@ if [ $# -eq 0 ]; then
   exit 0
 fi
 
+tstart=$(date)
+tsstart=$(date +%s)
+
 target=$1
 if [ "$1" = "short" ]; then
   target=regress_short
@@ -209,6 +212,13 @@ echo "==============================================="
 echo "Summary of log information:" 
 cat $LOG
 echo "==============================================="
+
+tend=$(date)
+tsend=$(date +%s)
+ttot=$(( tsend - tsstart ))
+echo "start time: $tstart"
+echo "end time: $tend"
+echo "running time: $ttot"
 
 #----------------------------------------------------
 
