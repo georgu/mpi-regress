@@ -51,7 +51,7 @@
 	solves compare problem of marmenor (sindex is the same)
 
 01.06.2023
-	regession test up to 24 processors
+	regession test (long) up to 24 processors
 		running regression test vistula-restart
 		*** error running simulation vistula-restart
 		running regression test medimms
@@ -76,6 +76,21 @@
 	solved problem for marmenor
 	results differed with tripple_point and more loops in hydro
 	tripple point used utlnv, instead utlov -> fixed
+	this also solved comapre with medi2d
+
+08.06.2023
+	regession test (long) up to 24 processors
+		running regression test medimms
+		*** error running with np = 18
+		running regression test vistula
+		*** error running with np = 11
+		running regression test goro
+		*** error running with np = 18
+	same errors in long and short
+
+09.06.2023
+	error on tripple points fixed
+	elements were on boundary - do not treat
 
 10.06.2023
 	new errors running with 128 procs
