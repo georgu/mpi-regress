@@ -1,0 +1,63 @@
+$title
+        2D OBC tide
+        test
+	mesh_shy
+$end
+
+$para
+        date   = 20161117  time   = 000000
+        itanf = 0  itend = 900 
+	idt = 300
+        idtout = 3600     itmout = 0
+        idtres = 864000   itmres = 0 
+        idtrms = 864000   itmrms = 0
+	idtdbg = 3600
+
+        ireib  = 5      czdef  = 0.0025
+	href = 0
+
+        ilin   = 0      itlin  = 0
+        itsplt = 2      coumax = 0.7  idtsyn = 3600
+        idtmin = 1
+
+        ampar  = 0.60   azpar  = 0.60   aapar = 1.00
+	ahpar = 0.2     idhtyp = 2
+        icor   = 1      isphe   = 0    	 
+
+        ilytyp = 3
+
+        iwtype = 1      itdrag = 0      dragco = 0
+        iturb  = 0      ibarcl = 0      ievap  = 1
+        iheat  = 0      hdecay = 0     botabs = 0
+
+        rtide  = 0    ltidec = 1e-5
+        rlin = 1
+
+        itemp = 0 thpar = 0.
+        isalt = 0 shpar = 0.
+
+
+        itvd = 0
+        itvdv  = 0
+
+        iconz = 0 conref = 0
+
+        nomp   = 4
+
+$end
+
+$proj
+	iproj=2
+	c_zone=49
+$end
+
+$bound1
+        kbound = 1 2 3 4 5 6 7 8 9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 
+         ibtyp = 1
+         boundn='./input/level_20161117_20171201.fem'
+$end
+
+

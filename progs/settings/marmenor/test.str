@@ -1,0 +1,365 @@
+
+=============================================================================
+sections to be customized:
+
+	title
+	para
+		czdef	-> default friction
+		dlat	-> average latitude
+		salref, temref, or in $name tempin, saltin
+		s/t/chpar is for smagorinski
+		ievap=1 to compute evaporation with feedback on salinity
+
+	bound		-> all boundaries (inlets)
+			-> temp, salt
+			   (for rivers temp=-999, salt=0 is a good choice)
+	extra
+	flux		-> fluxes at inlets
+	area		-> customize for friction
+	name		-> wind, qflux, rain
+			-> may be tempin, saltin (otherwise longer spin up)
+
+	in jamal (subcus.f) please customize idtreset
+	(for one month use 30.5 days, 
+	e.g., idtreset = 2*30.5*86400 for 2 months)
+=============================================================================
+
+        INPUT/MarMenor_GEO_2022
+
+
+$title
+        3D Mar Menor 01-01-2019
+	marmenor
+        ../regress/Mar_Menor
+$end
+
+$para
+
+        itanf = '2022-02-02::00:00:00'
+        itend = '2022-02-03::00:00:00'
+        idt = '100s'       idtmin = 0.001
+
+        idtout = '1h'
+        idtcon = '1h'
+        idtrst = '1d'
+        idtflx = '15m'
+	idtext = '15m'
+	idtdbg = 3600
+
+	date = 20220202  time = 000000
+
+	ireib = 6      czdef = 0.01    iczv = 1
+	ampar = 0.60   azpar = 0.60    aapar = 0.0
+
+	isphe = 1	icor = 1       dlat = 38.
+
+	iwtype = 1     dragco = 2.5e-3
+
+	ilin = 1 
+	coumax = 0.8   idtsyn = '15m'   itsplt = 3
+	iturb = 1      ibarcl = 3      ievap  = 1 
+    	isalt = 1      salref = 41     shpar  = 0.2
+    	itemp = 1      temref = 9      thpar  = 0.3
+
+        itvd   = 2      itvdv  = 1     idhtyp = 2
+
+        diftur = 0.001 vistur = 0.001
+	ilytyp = 3   hlvmin = 0.5
+
+	iheat = 1
+
+	nadist = 5
+	nomp = 4
+$end
+    	ahpar = 0.2
+	nadist = 5
+	tlimit1 = 60
+        slimit1 = 60
+    	irho  = 1      
+	iheat = 1 default areg iheat = 6 coareg
+	hdecay = 2 
+
+	iwvel  = 1
+    	iconz = 1 conref = 100 chpar = 0.2
+
+nonhyd
+        inohyd = 0      iqpnv  = 0
+	
+end
+
+        rstol = 1.0
+        nadist = 20
+
+wrt
+        iret = 1
+        istir = 0
+        ilog = 1
+        iadj = 0
+        percmin = 0
+        iaout = -1
+        c0 = 100
+        itmin = '2009-04-01'
+        itmax = -1
+        idtwrt = 0
+end
+
+        kbound = 6671 6670 6669 6668 6667 6666 6665 6664 6663 6662 6661
+	6660 6659 5211 6658 6657 6656 6655 6654 6653 6652 6651
+	6650 6649 6648 6647 6646 6645 5210 7876 7875 7874 7873
+	7872 7871 7870 7869 7868 7867 7866 7865 5213
+
+$bound1     ---- SHELF ----
+        kbound = 7008 7007 7006 7005 7004 7003 7002 7001 7000 6999 6998
+	6997 5549 6996 6995 6994 6993 6992 6991 6990 6989 6988 6987
+	6986 6985 6984 6983 5548 8214 8213 8212 8211 8210 8209 8208
+	8207 8206 8205 8204 8203 
+        ibtyp = 1
+        boundn = 'input/zeta.fem'
+ 	saltn = 'input/zeta.fem'
+	tempn = 'input/zeta.fem'
+$end
+	vel3dn = 'input/zeta.fem'
+	ztilt = 0.008
+        ktilt = 6652
+
+-----------fiumi--------------
+
+
+bound2  ----mirador--- old 3013
+        kbound = 3344
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_mirador.m3sec'
+        intpol = 2
+	temp=-999
+	salt=0
+end
+
+bound3     ----grajera---- old 3059
+        kbound =  3391
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_grajera.m3sec'
+        intpol = 2
+	temp=-999
+	salt=0
+end
+
+bound4    ----LosAlcazares-- no sal info in 2019  old 3438
+        kbound =  3773
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_alcarez.m3sec'
+	intpol = 2
+	temp=-999
+	salt= 0
+end
+	salt=5.22
+
+bound5     ----Albujon---- old 583
+        kbound = 897
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_albujon.m3sec'
+        intpol = 2
+	temp=-999
+	salt=4.8
+end
+	salt=8.28
+
+PLCurritas in 2019 no discharge data, salinty 5.7
+
+bound6     ----Miranda 3553----
+        kbound = 3508
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_miranda.m3sec'
+        intpol = 2
+	temp=-999
+	salt=23.99
+end
+	salt=17.90
+
+bound7     ---- miedo---
+        kbound =  1064 
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_miedo.m3sec'
+        intpol = 2
+	temp=-999
+	salt=46.55
+end
+	salt=15.90
+
+el carmoli in 2019 no discharge ma salinty 7.25 
+las matildes in 2019 no sìdscharge ma salinity 17.21 
+
+bound8     ----delBeal 3484----
+        kbound =  3995
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_el-beal.m3sec'
+        intpol = 2
+	temp=-999
+	salt=0
+end
+	salt=41.84
+
+Lo poyo no discharge salinty 21.3
+
+bound9    ----Ponce ---
+        kbound =  4075
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_ponce.m3sec'
+        intpol = 2
+	temp=-999
+	salt=0
+	
+end
+	salt=8.22
+
+
+bound10     ----Carrasquilla----
+        kbound =  4170
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_carraquila.m3sec'
+        intpol = 2
+	temp=-999
+	salt=34.5
+end
+	salt=34.29
+
+bound11     ----Atalayon---
+        kbound =  4377
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_atalayon.m3sec'
+        intpol = 2
+	temp=-999
+	salt=0
+end
+
+bound12     ----OPLCUrrutias--- starts 2019/10/31
+        kbound = 927
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_opcl_urrutias.m3sec'
+        intpol = 2
+        temp=-999
+        salt=0
+end
+
+bound13     ----El Carmoli --- starts 2019/11/11
+        kbound =  3835
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_elcamoli.m3sec'
+        intpol = 2
+        temp=-999
+        salt=0
+end
+
+bound14     ----Las Matildes---starts 2019/10/31
+        kbound =  3971
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_losmatidos.m3sec'
+        intpol = 2
+        temp=-999
+        salt=0
+end
+
+bound15     ----Lo Poyo--- starts 2021/09/30 commmented
+        kbound = 4025 
+        ibtyp = 3
+        boundn = 'INPUT/discharge/Q_2019_lopovo.m3sec'
+        intpol = 2
+        temp=-999
+        salt=0
+end
+
+
+
+$levels
+	1.5 2.5 3.5 4.5 5.5 7 10 15 20 30 50 78
+$end
+
+664 2374 5171 5174 5176 5181 5185 5187 5199 
+8719 
+
+
+extra  
+stazioni profili
+1 2 3 4 5 5b 6 7 8 9 9b 10 11 12 12b 13 14 15
+16 17 18 19 20 CP EN1 EN2  ES1 ES2 MA1 MA2 SPP
+
+$extra
+2520
+2787
+1671
+4351
+4737
+521
+2072
+446
+4639
+1591
+4124
+1584
+2180
+5168
+750
+3715
+5107
+3536
+4827
+5256
+5041
+1701
+4267
+12959
+4207
+15121
+1958
+9615
+4724
+12143
+11435
+ 16525
+ 30184
+ 1495
+ 1184 
+ 10682
+ 5509
+ 5520
+ 838
+ 11392
+ 2013
+ 543
+ 440
+$end
+
+
+
+bocca sud marchamalo sezione bocca mare, sezione pancia larga  
+bocca centro estacio sezione bocca mare , sezione laguna  
+nocca nord encanizadas sezione lunga mare, sezione sud sezione nord  
+
+$flux
+	6519 8594 0 
+	1282 1495 1346 0 
+
+	10272 10273 10271 14720 5736 0
+	1961 2262 0 
+
+	5300 1452 787 2237 3088 1992 
+	781 3378 5431 561 1758 616 0
+
+	5274 30128 396 0
+	4906 435 3098 4983 648 0
+$end
+
+
+
+
+$name
+        wind='input/wind.fem'
+        qflux='input/heat.fem'
+	rain='input/rain.fem'
+        gotmpa = 'input/gotmturb.nml'
+	tempin='input/temp.fem'
+	saltin='input/salt.fem'
+	zinit='input/zeta.fem'
+$end
+	restrt='Mar_Menor_hydro_2022_new_frict.rst'
+	tempin = '..'
+ 	saltin = '..'

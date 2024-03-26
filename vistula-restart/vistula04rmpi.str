@@ -1,0 +1,113 @@
+
+$title
+	Vistula lagoon - hydrodynamics and T/S, baroclinic - 3D
+	vistula04r
+	Vistula_Preg_Dejma_3Opend
+$end
+
+	itanf = 0  itend = 172800  idt = 300 
+	itanf = 0  itend = 31532400  idt = 300 
+	itanf = 0  itend = 31536000  idt = 300 
+	itanf = 0  itend = 5184000  idt = 300 
+	itanf = 0  itend = 15552000  idt = 300 
+	itanf = 600000  itend = 800000  idt = 300 
+	itanf = 600000  itend = 800000  idt = 150 
+	itanf = 0  itend = 15552000  idt = 150 
+
+	idtout = 3600  itmout = 15500000
+	vistur = 2.e-4   diftur = 2.e-4
+
+	itanf = 0  itend = 31536000  idt = 150 
+	itanf = 0  itend = 86400  idt = 300 
+	itanf = 0  itend = 31536000  idt = 300 
+	itanf = 0  itend = 172800  idt = 300 
+
+	1998-01-01::00:00:00
+	2000-12-31::21:00:00
+
+$para
+	itanf = '1998-01-01::00:00:00'  
+	itend = '1998-01-01::12:00:00'
+	idt = 300 
+	idtout = 86400  itmout = 0
+	idtcon = 86400  itmout = 0
+	idtext = 3600  itmext = 0
+	idtflx = 3600  itmflx = 0
+	idtrst = 3600  
+	idtdbg = 3600
+
+	itsplt = 3  coumax = 0.9  idtsyn = 3600
+
+	ireib = 5  czdef = 0.0025
+	ilin = 1  nadist = 0
+	icor = 1  dlat = 33.
+	href = 0.0
+
+	ampar = 0.60   azpar = 0.60
+	atpar = 1.0    adpar = 1.0   aapar = 0.0
+
+	date = 1998
+
+	dragco = 2.5e-3   iwtype = 3
+
+	ibarcl = 1   iturb = 1
+	isalt = 1  salref = 5.0
+	itemp = 1  temref = 15.0
+
+	levdbg = 0
+
+        idtcon = 86400  itmcon = 0
+	chpar = 0  shpar = 0  thpar = 0  
+$end
+
+        iconz = 1  conref = 1
+	isalt = 1  salref = 33.9
+	itemp = 1  temref = 15.07
+
+$levels
+	1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
+$end
+
+        ampli = 0.70  period = 43200.  phase = 10800.  zref = 0.
+
+$bound1 	Baltic Sea
+	kbound = 187 1171 656
+	ibtyp = 1
+	boundn = 'input/WaterLevel_Balt.txt'
+	temp = 10.
+	salt = 8.
+$end
+
+	tempn  = 'input/9899.temp'
+	saltn  = 'input/9899.salt'
+
+$bound2 	Pregolya
+	kbound = 782 861
+	ibtyp = 2
+	boundn = 'input/Pregolya.txt'
+	temp = 20.
+	salt = 0.
+$end
+
+bound3
+     kbound = 814    zref = 0.44
+     ibtyp = 3  conz = 0  salt = 0
+	temp = -999
+end
+
+$extra
+        1171 3488 2801 3519
+$end
+
+$flux
+	187 1171 656 0
+	1989 1520 1780 0
+$end
+
+
+$name
+	gotmpa = 'input/gotmturb.nml'
+	wind = 'input/Wind.txt'
+$end
+	qflux = 'input/1998pseudoCL.txt'
+

@@ -1,0 +1,178 @@
+
+23.05.2023
+	in subdry, setznv loop over ie_mpi
+	corrects error in marmenor
+	corrects also error in medi2d (np=28)
+
+24.05.2023
+	in newexpl.f, momentum_viscous_stability() must run over nel_unique
+	corrects error of differing time steps
+
+24.05.2023
+	regession test up to 32 processors
+		running regression test medimms
+		*** error running with np = 18
+		running regression test vistula
+		*** error running with np = 11
+		running regression test goro
+		*** error running with np = 18
+
+	regession test up to 64 processors
+		running regression test medimms
+		*** error running with np = 18		kant list
+		running regression test vistula
+		*** error running with np = 11		partition
+		*** error running with np = 51		tripple neighbor
+		running regression test marmenor
+		*** error running with np = 48		tripple neighbor
+		*** error running with np = 61		ckbnds: internal error
+		*** error running with np = 63		ckbnds: internal error
+		running regression test goro
+		*** error running with np = 18		tripple neighbor
+		*** error running with np = 49		make_links: aux list
+
+29.05.2023
+	regression test long:
+		run vistula-restart
+		compare medi2d 8
+		* run vistula 0, 1, ...
+		compare venlast 5
+		* compare marmenor 2
+		* run goro 5
+		compare goro 10 17 19 21
+
+	bug fix in subboxa.f -> all section arrays are dimensioned the same
+	this solves run error in goro
+	run error in vistula: instability because of atpar, adpar, aapar /= 1
+	...solved
+
+31.05.2023
+	in conzstab, use ie_mpi, run over nkn_unique (bug fix)
+	solves compare problem of marmenor (sindex is the same)
+
+01.06.2023
+	regession test (long) up to 24 processors
+		running regression test vistula-restart
+		*** error running simulation vistula-restart
+		running regression test medimms
+		*** error running with np = 18
+		comparing regression test medi2d
+		*** error comparing between 0 - 8
+		...
+		running regression test vistula
+		*** error running with np = 11
+		comparing regression test marmenor
+		*** error comparing between 0 - 6
+		...
+		running regression test goro
+		*** error running with np = 18
+	look at medi2d (8), marmenor (6), vistula-restart
+
+05.06.2023
+	solved problem for restart -> cannot compare zov, fxv, fyv
+	these variables after a restart are not available
+
+07.06.2023
+	solved problem for marmenor
+	results differed with tripple_point and more loops in hydro
+	tripple point used utlnv, instead utlov -> fixed
+	this also solved comapre with medi2d
+
+08.06.2023
+	regession test (long) up to 24 processors
+		running regression test medimms
+		*** error running with np = 18
+		running regression test vistula
+		*** error running with np = 11
+		running regression test goro
+		*** error running with np = 18
+	same errors in long and short
+
+09.06.2023
+	error on tripple points fixed
+	elements were on boundary - do not treat
+
+10.06.2023
+	new errors running with 128 procs
+bg_long.log:STOP error stop : flx_init
+bg_long.log:STOP error stop ckbnds: internal error
+bg_long.log:STOP error stop fix_kant: internal error (1)
+bg_long.log:STOP error stop handle_partition: partitioning error
+bg_long.log:STOP error stop make_links: internal error (2)
+
+
+
+22.03.2024
+
+new errors in stream with gfortran:
+
+===============================================
+errors found in 6 regression tests...
+===============================================
+Summary of log information:
+running regression tests: Fri Mar 22 13:18:56 CET 2024
+using target regress_short
+using regdirs medimms medi2d vistula venlast marmenor cucco goro
+-------------------------------------------------
+running regression test medimms
+*** error running with np = 5
+comparing regression test medimms
+  *** no valid run of medimms in mpisim.5
+*** errors comparing simulation medimms
+-------------------------------------------------
+-------------------------------------------------
+running regression test medi2d
+comparing regression test medi2d
+successful regression test medi2d
+-------------------------------------------------
+-------------------------------------------------
+running regression test vistula
+*** error running with np = 7
+comparing regression test vistula
+  *** no valid run of vistula in mpisim.7
+*** error comparing between 0 - 8
+*** errors comparing simulation vistula
+-------------------------------------------------
+-------------------------------------------------
+running regression test venlast
+*** error running with np = 5
+*** error running with np = 7
+comparing regression test venlast
+  *** no valid run of venlag in mpisim.5
+  *** no valid run of venlag in mpisim.7
+*** error comparing between 0 - 8
+*** errors comparing simulation venlast
+-------------------------------------------------
+-------------------------------------------------
+running regression test marmenor
+*** error running with np = 5
+*** error running with np = 6
+*** error running with np = 7
+*** error running with np = 8
+comparing regression test marmenor
+  *** no valid run of marmenor in mpisim.5
+  *** no valid run of marmenor in mpisim.6
+  *** no valid run of marmenor in mpisim.7
+  *** no valid run of marmenor in mpisim.8
+*** errors comparing simulation marmenor
+-------------------------------------------------
+-------------------------------------------------
+running regression test cucco
+comparing regression test cucco
+*** error comparing between 0 - 8
+*** errors comparing simulation cucco
+-------------------------------------------------
+-------------------------------------------------
+running regression test goro
+*** error running with np = 5
+*** error running with np = 6
+*** error running with np = 7
+comparing regression test goro
+  *** no valid run of goro in mpisim.5
+  *** no valid run of goro in mpisim.6
+  *** no valid run of goro in mpisim.7
+*** errors comparing simulation goro
+-------------------------------------------------
+errors found in 6 regression tests...
+===============================================
+
