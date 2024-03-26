@@ -21,6 +21,7 @@ default:
 	@echo "  distribute          distributes essential files to subdirs"
 	@echo "  diff                looks for differences in settings and str"
 	@echo "  link                links Makefile, run_test.sh to progs"
+	@echo "  init                links Makefile, run_test.sh to progs"
 	@echo "  clean               cleans log files"
 	@echo "  cleanall            also cleans regress dirs"
 	@echo "  cleantotal          also cleans regress dirs and mpidir.*"
@@ -61,6 +62,9 @@ distribute:
 
 diff:
 	@cd progs/settings; ./diff.sh
+
+init:
+	./run-regress.sh link
 
 link:
 	./run-regress.sh link
