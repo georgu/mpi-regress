@@ -114,7 +114,7 @@ cleanall: clean
 cleantotal: cleanall
 	@echo "cleaning dirs: $(MPIDIRS)"
 	-rm -rf $(MPIDIRS)
-	-rm -f shyfem shyfem-mpi shyfem-serial
+	-rm -f shyfem shyfem-mpi
 
 zip: cleantotal
 	-zip -r $(DIR).zip *

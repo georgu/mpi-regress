@@ -31,7 +31,6 @@ RegressRun()
   what=$1
 
   [ ! -d $what ] && echo "no such directory $what" && exit 1
-
   cd $what
 
   echo "-------------------------------------------------" | tee -a $LOG
@@ -78,7 +77,7 @@ RegressRun()
 
 RegressCollect()
 {
-  CDDir $1
+  cd $1
   newdir=$progsdir/settings/$1
   mkdir -p $newdir
   echo "settings.sh -> $newdir"
@@ -90,20 +89,21 @@ RegressCollect()
 
 RegressDistribute()
 {
-  CDDir $1
-  local origdir=$progsdir/settings/$1
-  local setting=$origdir/settings.sh
-  echo "$setting -> settings.sh"
-  cp -f $setting .
-  local strs="$origdir/*.str"
-  echo "$strs -> $1"
-  cp -f $strs .
+  cd $1
+  newdir=$progsdir/settings/$1
+  mkdir -p $newdir
+  new=$newdir/settings.sh
+  echo "$new -> settings.sh"
+  cp -f $new .
+  new="$newdir/*.str"
+  echo "$new -> settings.sh"
+  cp -f $new .
   cd $basedir
 }
 
 RegressPartition()
 {
-  CDDir $1
+  cd $1
   basins=$( grep basins settings.sh )
   basin=$( echo $basins | sed -e 's/.*=//' | sed -e 's/"//g' )
   #echo $basin
@@ -115,14 +115,14 @@ RegressPartition()
 
 RegressClean()
 {
-  CDDir $1
+  cd $1
   make cleantotal
   cd $basedir
 }
 
 RegressLink()
 {
-  CDDir $1
+  cd $1
   rm -f Makefile run_test.sh
   ln -sf $progsdir/Makefile
   ln -sf $progsdir/run_test.sh
@@ -131,22 +131,9 @@ RegressLink()
 
 RegressInfo()
 {
-  CDDir $1
+  cd $1
   make info
   cd $basedir
-}
-
-CDDir()
-{
-  local dir=$1
-
-  if [ ! -d $dir ]; then
-    echo "directory $dir not existing... creating"
-    mkdir $dir
-    [ $? -ne 0 ] && echo "*** cannot create directory $dir" && exit 1
-  fi
-
-  cd $dir
 }
 
 #----------------------------------------------------

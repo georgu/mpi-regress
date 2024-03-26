@@ -1,8 +1,6 @@
 
 DIR = regress-mpi
 
-DIRS = cucco goro marmenor medi2d medimms venlast vistula
-
 SPECIAL = README Makefile License
 DIST = $(SPECIAL) run-regress.sh \
 	progs/Makefile progs/run_test.sh progs/test_partition.sh
@@ -22,7 +20,6 @@ default:
 	@echo "  collect             collects essential files from subdirs"
 	@echo "  distribute          distributes essential files to subdirs"
 	@echo "  diff                looks for differences in settings and str"
-	@echo "  init                links Makefile, run_test.sh to progs"
 	@echo "  link                links Makefile, run_test.sh to progs"
 	@echo "  clean               cleans log files"
 	@echo "  cleanall            also cleans regress dirs"
@@ -65,8 +62,6 @@ distribute:
 diff:
 	@cd progs/settings; ./diff.sh
 
-init: link
-
 link:
 	./run-regress.sh link
 
@@ -87,18 +82,8 @@ cleanall: clean
 	-rm -f regression.log
 	-rm -f *.zip
 	-rm -f *.tar.gz
-	cd vistula-restart; make cleanall
 
 cleantotal: cleanall
-	@for dir in $(DIRS) ; do \
-	  echo $$dir ;  cd $$dir ; rm -f Makefile run_test.sh ; cd .. ; \
-	done
-	cd vistula-restart; make cleantotal
-
-show:
-	@for dir in $(DIRS) ; do \
-	  echo $$dir ; \
-	done
 
 dist:
 	zip -r $(DIR)-dist.zip $(DIST) progs/settings/*
