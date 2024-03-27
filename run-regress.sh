@@ -20,7 +20,7 @@ mkdir -p $progsdir/settings
 
 export LOG=$basedir/regression.log
 
-bindir=$HOME/work/shyfem_repo/shyfemcm/bin
+bindir=$HOME/work/shyfem_repo/shyfemcm-ismar/bin
 
 . $bindir/colors.sh
 
@@ -126,6 +126,7 @@ RegressLink()
   rm -f Makefile run_test.sh
   ln -sf $progsdir/Makefile
   ln -sf $progsdir/run_test.sh
+  ln -sf $progsdir/config.sh
   cd $basedir
 }
 

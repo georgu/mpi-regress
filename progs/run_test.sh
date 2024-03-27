@@ -49,24 +49,31 @@ npmax=64
 npmax=128
 
 hostname=$( hostname )
-repodir="$HOME/georg/work/shyfem_repo"
 
-[ ! -d $repodir ] && echo "no such dir: $repodir" && exit 1
+#repodir="$HOME/georg/work/shyfem_repo"
 
-shydir_mpi="$repodir/shyfem-mpi"
-shydir_mpi="$repodir/shyfemcm"
-shydir_serial="$repodir/shyfem"
+#[ ! -d $repodir ] && echo "no such dir: $repodir" && exit 1
 
-[ ! -d $shydir_mpi ] && echo "no such dir: $shydir_mpi" && exit 1
-[ ! -d $shydir_serial ] && echo "no such dir: $shydir_serial" && exit 1
+#shydir_mpi="$repodir/shyfem-mpi"
+#shydir_mpi="$repodir/shyfemcm"
+#shydir_serial="$repodir/shyfem"
+
+#[ ! -d $shydir_mpi ] && echo "no such dir: $shydir_mpi" && exit 1
+#[ ! -d $shydir_serial ] && echo "no such dir: $shydir_serial" && exit 1
+
+#check_debug=$shydir_mpi/bin/check_shympi_debug
+#check_debug=$shydir_serial/bin/check_shympi_debug
+
+thisdir=$( dirname $0 )
+echo "executing $0 from $thisdir"
+. $thisdir/config.sh
+[ $? -ne 0 ] && echo "*** error reading config.sh" && exit 9
 
 actdir=$( pwd )
 mpi_command="mpirun"
 mpi_command="mpirun --oversubscribe"
 [ $hostname = "stream" ] && mpi_command="mpirun"
 [ $hostname = "storm" ] && mpi_command="mpirun"
-check_debug=$shydir_mpi/bin/check_shympi_debug
-check_debug=$shydir_serial/bin/check_shympi_debug
 
 stop_on_run_error="YES"
 stop_on_run_error="NO"
