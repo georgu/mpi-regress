@@ -20,6 +20,18 @@ if [ $hostname = "lagoon" ]; then
 
   npmax=16
 
+elif [ $hostname = "stream" ]; then
+
+  repodir="$HOME/georg/work/shyfem_repo"
+
+  shydir_serial="$repodir/shyfemcm-ismar"
+  shydir_mpi="$repodir/shyfemcm-ismar-mpi"
+  shyfem_serial="$shydir_mpi/bin/shyfem"
+  shyfem_mpi="$shydir_mpi/bin/shyfem"
+  check_debug="$repodir/shyfem/bin/check_shympi_debug"
+
+  npmax=16
+
 else
   echo "*** no entry for hostname found: $hostname ...aborting"
   exit 1

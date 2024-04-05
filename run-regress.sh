@@ -20,7 +20,9 @@ mkdir -p $progsdir/settings
 
 export LOG=$basedir/regression.log
 
-bindir=$HOME/work/shyfem_repo/shyfemcm-ismar/bin
+. $progsdir/config.sh
+
+bindir=$shydir_serial/bin
 
 . $bindir/colors.sh
 
