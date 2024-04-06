@@ -8,7 +8,19 @@
 
 echo "configuring mpi_regress for $hostname"
 
-if [ $hostname = "lagoon" ]; then
+if [ $hostname = "Caesium" ]; then
+
+  repodir="$HOME/work/shyfem_repo"
+
+  shydir_serial="$repodir/shyfemcm"
+  shydir_mpi="$repodir/shyfemcm"
+  shyfem_serial="$shydir_mpi/bin/shyfem"
+  shyfem_mpi="$shydir_mpi/bin/shyfem"
+  check_debug="$repodir/shyfem/bin/check_shympi_debug"
+
+  npmax=4
+
+elif [ $hostname = "lagoon" ]; then
 
   repodir="$HOME/georg/work/shyfem_repo"
 
