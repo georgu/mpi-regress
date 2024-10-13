@@ -47,6 +47,8 @@ npmax=16
 npmax=32
 npmax=64
 npmax=128
+npmax=8
+npmax=32
 
 hostname=$( hostname )
 repodir="$HOME/georg/work/shyfem_repo"
@@ -54,14 +56,21 @@ repodir="$HOME/georg/work/shyfem_repo"
 [ ! -d $repodir ] && echo "no such dir: $repodir" && exit 1
 
 shydir_mpi="$repodir/shyfem-mpi"
-shydir_serial="$repodir/shyfem"
+shydir_mpi="$repodir/shyfemcm-ismar"
+shydir_serial="$repodir/shyfemcm-ismar"
+#shydir_serial="$repodir/shyfem"
+
+[ ! -d $shydir_mpi ] && echo "no such dir: $shydir_mpi" && exit 1
+[ ! -d $shydir_serial ] && echo "no such dir: $shydir_serial" && exit 1
 
 actdir=$( pwd )
 mpi_command="mpirun"
 mpi_command="mpirun --oversubscribe"
 [ $hostname = "stream" ] && mpi_command="mpirun"
 [ $hostname = "storm" ] && mpi_command="mpirun"
-check_debug=$shydir_mpi/fem3d/check_shympi_debug
+[ $hostname = "tide" ] && mpi_command="mpirun"
+check_debug=$shydir_mpi/bin/check_shympi_debug
+check_debug=$shydir_serial/bin/check_shympi_debug
 
 stop_on_run_error="YES"
 stop_on_run_error="NO"
@@ -84,6 +93,12 @@ SetApplication()
  if [ -f settings.sh ]; then
    . ./settings.sh
    echo "settings for $what has been read"
+ fi
+
+ if [ $maxdiff = "YES" ]; then
+   epsdiff=$epsglobal
+   echo "overriding local epsdiff with global one"
+   echo "epsdiff = $epsdiff"
  fi
 
  if [ -z "$basins" ]; then
@@ -167,7 +182,7 @@ HandleOptions()
         -long)          short="NO";;
         -debug)         debug="YES";;
         -chkonlydbg)    chkonlydbg="YES";;
-        -maxdiff)       maxdiff="YES"; epsdiff=$2; shift;;
+        -maxdiff)       maxdiff="YES"; epsglobal=$2; shift;;
         -*)             echo "No such option: $1"; exit 1;;
         *)              break;;
     esac
@@ -239,6 +254,7 @@ SetProcs()
 Info()
 {
   local dir
+  local shybin
 
   echo "what: $what"
   echo "cpus: $cpus"
@@ -256,16 +272,32 @@ Info()
     echo "*** no such directory: $dir"
     exit 1
   fi
-  [ -f shyfem-mpi ] && rm -f shyfem-mpi
-  ln -s $dir/fem3d/shyfem shyfem-mpi
+  shybin=$dir/bin/shyfem
+  if [ ! -x $shybin ]; then
+    echo "*** no such executable: $shybin"
+    exit 1
+  else
+    local version_mpi=$( $shybin | grep version )
+    echo "version_mpi: $version_mpi"
+  fi
+  [ -L shyfem-mpi ] && rm -f shyfem-mpi
+  ln -s $dir/bin/shyfem shyfem-mpi
 
   dir=$shydir_serial
   if [ ! -d $dir ]; then
     echo "*** no such directory: $dir"
     exit 1
   fi
-  [ -f shyfem-serial ] && rm -f shyfem-serial
-  ln -s $dir/fem3d/shyfem shyfem-serial
+  shybin=$dir/bin/shyfem
+  if [ ! -x $shybin ]; then
+    echo "*** no such executable: $shybin"
+    exit 1
+  else
+    local version_serial=$( $shybin | grep version )
+    echo "version_serial: $version_serial"
+  fi
+  [ -L shyfem-serial ] && rm -f shyfem-serial
+  ln -s $dir/bin/shyfem shyfem-serial
 }
 
 PrepareBasins()
@@ -276,11 +308,11 @@ PrepareBasins()
     [ -f $basin.bas ] && continue
     #mpi_basin.sh $np $basin.grd
     echo "preparing basin $basin"
-    shypre -noopti -silent $basin.grd
+    $shydir_mpi/bin/shypre -noopti -silent $basin.grd
     [ $? -ne 0 ] && echo "error creating basin $basin" && exit 1
   done
   export SHYFEMDIR=$shydir_serial
-  echo "SHYFEMDIR=$SHYFEMDIR"
+  #echo "SHYFEMDIR=$SHYFEMDIR"
 }
 
 LinkForcing()
@@ -430,23 +462,29 @@ RunShyfem()
 {
   local np=$1
 
-  options=""
+  local options=""
   [ $debug = "YES" ] && options="-debout -mpi_debug"
   #echo "options are $options"
 
   DeleteFile running_shyfem_ok.log
 
+  local shydir
+  local command
+
   if [ $np -eq 0 ]; then
-    command="$repodir/shyfem/bin/shyfem $options $str"
+    shydir=$shydir_serial
+    command="$shydir/bin/shyfem $options $str"
   elif [ $np -eq 1 ]; then
-    command="$repodir/shyfem-mpi/bin/shyfem $options $str"
+    shydir=$shydir_mpi
+    command="$shydir/bin/shyfem $options $str"
   else
+    shydir=$shydir_mpi
     options="-mpi $options"
-    command="$mpi_command -np $np $repodir/shyfem-mpi/bin/shyfem $options $str"
+    command="$mpi_command -np $np $shydir/bin/shyfem $options $str"
   fi
   echo "$command" > run-command.sh
   chmod +x run-command.sh
-  adir=$( pwd )
+  local adir=$( pwd )
   #echo "    running as: $command"
   $command &>> logfile.txt
   status=$?
@@ -470,7 +508,7 @@ RunShyfem()
     fi
   else
     touch running_shyfem_ok.log
-    timeline=$( grep "TIME TO SOLUTION (CPU)  =" logfile.txt )
+    local timeline=$( grep "TIME TO SOLUTION (CPU)  =" logfile.txt )
     echo "   $timeline"
   fi
 }
@@ -761,6 +799,7 @@ if [ $run = "YES" ]; then
   action="run"
   CheckSTR
   PrepareBasins
+  Info
   RunSims
 fi
 if [ $compare = "YES" ]; then

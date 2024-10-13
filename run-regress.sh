@@ -9,15 +9,29 @@ stop_on_error="YES"
 stop_on_error="NO"
 errors=0
 npmax=64
+npmax=4
 #npmax=8
 #npmax=12
+
+diffall=0.001
+diffall=
+export diffall
 
 basedir=$( pwd )
 
 progsdir=$basedir/progs
 mkdir -p $progsdir/settings
 
+partition_script=$progsdir/test_partition.sh
+
 export LOG=$basedir/regression.log
+
+bindir=$HOME/work/shyfem_repo/shyfemcm/bin
+if [ ! -d $bindir ]; then
+  bindir=$HOME/georg/work/shyfem_repo/shyfemcm-ismar/bin
+fi
+
+. $bindir/colors.sh
 
 #----------------------------------------------------
 
@@ -45,8 +59,20 @@ RegressRun()
     fi
   fi
 
+  cd $basedir
+
   sync; sync; sync
   sleep 1
+
+  RegressCompare $what
+}
+
+RegressCompare()
+{
+  what=$1
+
+  [ ! -d $what ] && echo "no such directory $what" && exit 1
+  cd $what
 
   echo "comparing regression test $what" | tee -a $LOG
 
@@ -54,7 +80,7 @@ RegressRun()
   if [ $? -ne 0 ]; then
     errors=$(( errors + 1 ))
     cat compare.log
-    echo "*** errors comparing simulation $what" | tee -a $LOG
+    echo "${red}*** errors comparing simulation $what${normal}" | tee -a $LOG
     if [ $stop_on_error = "YES" ]; then
       cat $LOG
       exit 1
@@ -65,7 +91,7 @@ RegressRun()
     fi
   fi
 
-  echo "successful regression test $what" | tee -a $LOG
+  echo "${green}successful regression test $what${normal}" | tee -a $LOG
   echo "-------------------------------------------------" | tee -a $LOG
   cd $basedir
 }
@@ -102,8 +128,7 @@ RegressPartition()
   basins=$( grep basins settings.sh )
   basin=$( echo $basins | sed -e 's/.*=//' | sed -e 's/"//g' )
   #echo $basin
-  script=$progsdir/test_partition.sh
-  $script $npmax $basin
+  $partition_script $npmax $basin
   [ $? -ne 0 ] && errors=$(( errors + 1 ))
   cd $basedir
 }
@@ -155,6 +180,11 @@ if [ "$1" = "short" ]; then
 elif [ "$1" = "long" ]; then
   target=regress_long
   regdirs="vistula-restart $regdirs"
+elif [ "$1" = "restart" ]; then
+  target=regress_restart
+  regdirs="vistula-restart"
+elif [ "$1" = "compare" ]; then
+  target=compare
 elif [ "$1" = "clean" ]; then
   target=clean
   regdirs="vistula-restart $regdirs"
@@ -196,6 +226,8 @@ do
     RegressInfo $regdir
   elif [ $target = "partition" ]; then
     RegressPartition $regdir
+  elif [ $target = "compare" ]; then
+    RegressCompare $regdir
   else
     RegressRun $regdir
   fi
@@ -203,9 +235,11 @@ done
 
 echo "==============================================="
 if [ $errors -eq 0 ]; then
-  echo "all regression tests were successful..." | tee -a $LOG
+  echo "${green}all regression tests were successful...${normal}" \
+			| tee -a $LOG
 else
-  echo "errors found in $errors regression tests..." | tee -a $LOG
+  echo "${red}errors found in $errors regression tests...${normal}" \
+			| tee -a $LOG
 fi
 
 echo "==============================================="

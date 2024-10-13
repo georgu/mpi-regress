@@ -20,6 +20,12 @@ else
   $(info using SHYDIR = $(SHYDIR))
 endif
 
+ifneq ("$(wildcard $(diffall))","")
+  epsdiff = $(diffall)
+  COMPARE_OPTIONS += -maxdiff $(epsdiff)
+endif
+$(info using epsdiff = $(epsdiff))
+
 #-------------------------------------------------------
 
 default:
@@ -31,8 +37,8 @@ default:
 	@echo "  link_exes       make symbolic links to shyfem exes"
 
 regress: regress_short
-regress_long: debug_long
-regress_short: debug_short
+regress_long: debug_long compare
+regress_short: debug_short compare
 
 run: cleanrun
 	./run_test.sh -run $(STR)
@@ -85,6 +91,7 @@ clean:
 	-rm -f fort.*
 	-rm -f *.job
 	-rm -f mpi_debug_*.txt
+	-rm -f tvd_debug.txt
 
 cleanall: clean
 	-rm -f *.flx *.shy *.inf *.ext *.dbg *.rst
@@ -109,6 +116,7 @@ cleanall: clean
 	-rm -f *.bas.[0-9]*.elem.grd
 	-rm -f logfile.txt
 	-rm -f boxes_*.txt
+	-rm -f dbg-command.sh run-command.sh
 
 cleantotal: cleanall
 	@echo "cleaning dirs: $(MPIDIRS)"

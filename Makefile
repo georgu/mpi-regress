@@ -12,8 +12,10 @@ default:
 	@echo "  regress             runs default regression test (short)"
 	@echo "  regress_long        runs long regression test"
 	@echo "  regress_short       runs short regression test"
+	@echo "  regress_restart     runs restart regression test"
 	@echo "  regress_long_bg     runs long regression test in background"
 	@echo "  regress_short_bg    runs short regression test in background"
+	@echo "  compare             only compares regression tests"
 	@echo "  partition           runs regression only on partitioning"
 	@echo "  info                info on simulations"
 	@echo "  collect             collects essential files from subdirs"
@@ -29,6 +31,9 @@ default:
 regress:
 	./run-regress.sh short
 
+regress_restart:
+	./run-regress.sh restart
+
 regress_long:
 	./run-regress.sh long
 
@@ -42,6 +47,9 @@ regress_short:
 regress_short_bg:
 	@echo "running in background - log in bg_short.log"
 	nohup ./run-regress.sh short > bg_short.log 2>&1 &
+
+compare:
+	./run-regress.sh compare
 
 partition:
 	./run-regress.sh partition
@@ -60,6 +68,9 @@ diff:
 
 link:
 	./run-regress.sh link
+
+stats:
+	./progs/stats.sh
 
 #----------------------------------------------------------
 
