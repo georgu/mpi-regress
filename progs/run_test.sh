@@ -52,7 +52,7 @@ npmax=32
 
 hostname=$( hostname )
 
-#repodir="$HOME/georg/work/shyfem_repo"
+repodir="$HOME/georg/work/shyfem_repo"
 
 shydir_mpi="$repodir/shyfem-mpi"
 shydir_mpi="$repodir/shyfemcm-ismar"

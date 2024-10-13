@@ -14,6 +14,7 @@
   strs=.
   forcings="input"
   str_regress="medi_mms_ah"
+  str_regress="medi_mms_ah_tvd"
   epsdiff=0
   #epsdiff=0.000001
 

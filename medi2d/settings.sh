@@ -17,6 +17,7 @@
   str_regress="georg08.str"
   str_regress="georg07.str"
   str_regress="georg01.str"
+  str_regress="georg01_tvd.str"
   epsdiff=0
   #epsdiff=0.000001
 

@@ -13,6 +13,7 @@
   strs=.
   forcings="input"
   str_regress="mmn11a.str"
+  str_regress="mmn11a_tvd.str"
   epsdiff=0
   #epsdiff=0.000001
 

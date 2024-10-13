@@ -13,6 +13,8 @@ npmax=4
 #npmax=8
 #npmax=12
 
+hostname=$( hostname )
+
 diffall=0.001
 diffall=
 export diffall
@@ -26,10 +28,16 @@ partition_script=$progsdir/test_partition.sh
 
 export LOG=$basedir/regression.log
 
-bindir=$HOME/work/shyfem_repo/shyfemcm/bin
-if [ ! -d $bindir ]; then
-  bindir=$HOME/georg/work/shyfem_repo/shyfemcm-ismar/bin
+shyfemdir=$HOME/work/shyfem_repo/shyfemcm
+[ $hostname = "Caesium" ] && shyfemdir=$HOME/work/shyfem_repo/shyfemcm
+[ $hostname = "tide" ] && shyfemdir=$HOME/georg/work/shyfem_repo/shyfemcm-ismar
+
+if [ ! -d $shyfemdir ]; then
+  echo "cannot find shyfem directory: $shyfemdir"
+  exit 1
 fi
+
+bindir=$shyfemdir/bin
 
 . $progsdir/config.sh
 . $bindir/colors.sh

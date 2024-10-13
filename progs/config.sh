@@ -16,7 +16,7 @@ if [ $hostname = "Caesium" ]; then
   shydir_mpi="$repodir/shyfemcm"
   shyfem_serial="$shydir_mpi/bin/shyfem"
   shyfem_mpi="$shydir_mpi/bin/shyfem"
-  check_debug="$repodir/shyfem/bin/check_shympi_debug"
+  check_debug="$shydir_mpi/bin/check_shympi_debug"
 
   npmax=4
 
