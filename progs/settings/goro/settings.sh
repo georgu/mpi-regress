@@ -14,6 +14,7 @@
   strs=.
   forcings="input"
   str_regress="goro01ah.str"
+  str_regress="goro01ah_tvd.str"
   epsdiff=0
   #epsdiff=0.000001
 

@@ -8,5 +8,6 @@
   forcings=input
   str_regress="vistula06rmpi.str"
   str_regress="vistula05rmpi.str"
+  str_regress="vistula05rmpi_tvd.str"
   #cpfiles=boxes.txt
 
