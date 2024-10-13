@@ -94,6 +94,7 @@ clean:
 	-rm -f tvd_debug.txt
 
 cleanall: clean
+	-rm -f *.log
 	-rm -f *.flx *.shy *.inf *.ext *.dbg *.rst
 	-rm -f out.fem
 	-rm -f all.[23]d.[1-9]*

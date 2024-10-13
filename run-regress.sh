@@ -31,6 +31,7 @@ if [ ! -d $bindir ]; then
   bindir=$HOME/georg/work/shyfem_repo/shyfemcm-ismar/bin
 fi
 
+. $progsdir/config.sh
 . $bindir/colors.sh
 
 #----------------------------------------------------
@@ -146,6 +147,7 @@ RegressLink()
   rm -f Makefile run_test.sh
   ln -sf $progsdir/Makefile
   ln -sf $progsdir/run_test.sh
+  ln -sf $progsdir/config.sh
   cd $basedir
 }
 

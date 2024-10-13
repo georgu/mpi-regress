@@ -100,3 +100,79 @@ bg_long.log:STOP error stop fix_kant: internal error (1)
 bg_long.log:STOP error stop handle_partition: partitioning error
 bg_long.log:STOP error stop make_links: internal error (2)
 
+
+
+22.03.2024
+
+new errors in stream with gfortran:
+
+===============================================
+errors found in 6 regression tests...
+===============================================
+Summary of log information:
+running regression tests: Fri Mar 22 13:18:56 CET 2024
+using target regress_short
+using regdirs medimms medi2d vistula venlast marmenor cucco goro
+-------------------------------------------------
+running regression test medimms
+*** error running with np = 5
+comparing regression test medimms
+  *** no valid run of medimms in mpisim.5
+*** errors comparing simulation medimms
+-------------------------------------------------
+-------------------------------------------------
+running regression test medi2d
+comparing regression test medi2d
+successful regression test medi2d
+-------------------------------------------------
+-------------------------------------------------
+running regression test vistula
+*** error running with np = 7
+comparing regression test vistula
+  *** no valid run of vistula in mpisim.7
+*** error comparing between 0 - 8
+*** errors comparing simulation vistula
+-------------------------------------------------
+-------------------------------------------------
+running regression test venlast
+*** error running with np = 5
+*** error running with np = 7
+comparing regression test venlast
+  *** no valid run of venlag in mpisim.5
+  *** no valid run of venlag in mpisim.7
+*** error comparing between 0 - 8
+*** errors comparing simulation venlast
+-------------------------------------------------
+-------------------------------------------------
+running regression test marmenor
+*** error running with np = 5
+*** error running with np = 6
+*** error running with np = 7
+*** error running with np = 8
+comparing regression test marmenor
+  *** no valid run of marmenor in mpisim.5
+  *** no valid run of marmenor in mpisim.6
+  *** no valid run of marmenor in mpisim.7
+  *** no valid run of marmenor in mpisim.8
+*** errors comparing simulation marmenor
+-------------------------------------------------
+-------------------------------------------------
+running regression test cucco
+comparing regression test cucco
+*** error comparing between 0 - 8
+*** errors comparing simulation cucco
+-------------------------------------------------
+-------------------------------------------------
+running regression test goro
+*** error running with np = 5
+*** error running with np = 6
+*** error running with np = 7
+comparing regression test goro
+  *** no valid run of goro in mpisim.5
+  *** no valid run of goro in mpisim.6
+  *** no valid run of goro in mpisim.7
+*** errors comparing simulation goro
+-------------------------------------------------
+errors found in 6 regression tests...
+===============================================
+

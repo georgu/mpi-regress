@@ -51,9 +51,8 @@ npmax=8
 npmax=32
 
 hostname=$( hostname )
-repodir="$HOME/georg/work/shyfem_repo"
 
-[ ! -d $repodir ] && echo "no such dir: $repodir" && exit 1
+#repodir="$HOME/georg/work/shyfem_repo"
 
 shydir_mpi="$repodir/shyfem-mpi"
 shydir_mpi="$repodir/shyfemcm-ismar"
@@ -62,6 +61,11 @@ shydir_serial="$repodir/shyfemcm-ismar"
 
 [ ! -d $shydir_mpi ] && echo "no such dir: $shydir_mpi" && exit 1
 [ ! -d $shydir_serial ] && echo "no such dir: $shydir_serial" && exit 1
+
+thisdir=$( dirname $0 )
+echo "executing $0 from $thisdir"
+. $thisdir/config.sh
+[ $? -ne 0 ] && echo "*** error reading config.sh" && exit 9
 
 actdir=$( pwd )
 mpi_command="mpirun"

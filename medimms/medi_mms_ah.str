@@ -1,0 +1,27 @@
+$title
+        simulations for mediterranean grid
+        medi_mms
+        medi_mms
+$end
+
+$para
+        itanf = 0 itend = 600 idt = 5
+
+	idtdbg = 5
+        idtout = 0  itmout = 0
+
+        date = 0
+        itsplt = 2   idtsyn = 3600
+
+        ireib = 5   czdef = 2.5e-3
+        iwtype = 3      dragco = 2.5e-3
+        rtide = 0
+
+        ampar = 0.60   azpar = 0.60
+	ahpar = 0.2    idhtyp = 2
+$end
+
+$name
+        wind = 'input/wind.txt'
+$end
+
