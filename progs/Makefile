@@ -26,6 +26,8 @@ ifneq ("$(wildcard $(diffall))","")
 endif
 $(info using epsdiff = $(epsdiff))
 
+npwant = 0
+
 #-------------------------------------------------------
 
 default:
@@ -35,6 +37,8 @@ default:
 	@echo "  regress_short   run short regression test"
 	@echo "  compare         compare tests"
 	@echo "  link_exes       make symbolic links to shyfem exes"
+	@echo "  use npwant=np to set number of desired processors"
+	@echo "  npwant          $(npwant)"
 
 regress: regress_short
 regress_long: debug_long compare
@@ -44,29 +48,31 @@ run: cleanrun
 	./run_test.sh -run $(STR)
 
 debug_long: cleanrun
-	./run_test.sh -run -debug -long $(STR)
+	./run_test.sh -run -debug -long -npwant $(npwant) $(STR)
 
 debug: debug_short
 debug_short: cleanrun
-	./run_test.sh -run -debug $(STR)
+	echo "running with $(npwant) processors"
+	./run_test.sh -run -debug -npwant $(npwant) $(STR)
 
 cleanrun:
+	echo "running with $(npwant) processors"
 	./run_test.sh -clean
 
 #compare: compare_summary
 compare: compare_no_summary
 
 compare_summary:
-	./run_test.sh -compare -summary $(COMPARE_OPTIONS)
+	./run_test.sh -compare -summary -npwant $(npwant) $(COMPARE_OPTIONS)
 
 compare_no_summary:
-	./run_test.sh -compare $(COMPARE_OPTIONS)
+	./run_test.sh -compare -npwant $(npwant) $(COMPARE_OPTIONS)
 
 compare_full:
-	./run_test.sh -compare 
+	./run_test.sh -compare -npwant $(npwant)  
 
 info:
-	./run_test.sh -info 
+	./run_test.sh -info -npwant $(npwant)  
 
 link: link_exes
 link_exes:

@@ -28,6 +28,7 @@ default:
 	@echo "  cleantotal          also cleans regress dirs and mpidir.*"
 	@echo "  zip, tar            creates tar file of dir"
 	@echo "  dist                creates zip file of essential files"
+	@echo "  npwant=np	     set desired processors to np"
 
 regress:
 	./run-regress.sh short
@@ -40,6 +41,7 @@ regress_long:
 
 regress_long_bg:
 	@echo "running in background - log in bg_long.log"
+	@echo "using $(npwant) processors"
 	nohup ./run-regress.sh long > bg_long.log 2>&1 &
 
 regress_short:
@@ -47,6 +49,7 @@ regress_short:
 
 regress_short_bg:
 	@echo "running in background - log in bg_short.log"
+	@echo "using $(npwant) processors"
 	nohup ./run-regress.sh short > bg_short.log 2>&1 &
 
 compare:

@@ -19,7 +19,7 @@ diffall=0.001
 diffall=
 export diffall
 
-basedir=$( pwd )
+export basedir=$( pwd )
 
 progsdir=$basedir/progs
 mkdir -p $progsdir/settings
@@ -41,6 +41,8 @@ bindir=$shyfemdir/bin
 
 . $progsdir/config.sh
 . $bindir/colors.sh
+
+npmax=4
 
 #----------------------------------------------------
 

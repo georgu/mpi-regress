@@ -47,8 +47,8 @@ npmax=16
 npmax=32
 npmax=64
 npmax=128
-npmax=8
 npmax=32
+npmax=8
 
 hostname=$( hostname )
 
@@ -64,8 +64,12 @@ shydir_serial="$repodir/shyfemcm-ismar"
 
 thisdir=$( dirname $0 )
 echo "executing $0 from $thisdir"
-. $thisdir/config.sh
+[ -z "$basedir" ] && basedir=".."
+echo "basedir is $basedir"
+. $basedir/progs/config.sh
 [ $? -ne 0 ] && echo "*** error reading config.sh" && exit 9
+
+#npwant=4
 
 actdir=$( pwd )
 mpi_command="mpirun"
@@ -135,6 +139,7 @@ FullUsage()
   echo "  -summary             only write summary for time record"
   echo "  -verbose             be verbose"
   echo "  -application what    set application to what"
+  echo "  -npwant np           run with np processors"
   echo "  -regress             runs regression test"
   echo "  -run                 run simulations"
   echo "  -compare             compare simulations"
@@ -165,6 +170,7 @@ HandleOptions()
   debug="NO"
   chkonlydbg="NO"
   maxdiff="NO"
+  npwant=0
 
   while [ -n "$1" ]
   do
@@ -176,6 +182,7 @@ HandleOptions()
         -summary)       summary="YES";;
         -verbose)       verbose="YES";;
         -application)   what=$2; shift;;
+        -npwant)        npwant=$2; shift;;
         -regress)       regress="YES";;
         -run)           run="YES";;
         -compare)       compare="YES";;
@@ -230,7 +237,8 @@ SetProcs()
     [ $npmin -lt 2 ] && npmin=2
     [ -z "$npmax" ] && npmax=$cpus
     [ $npmax -gt $cpus ] && npmax=$cpus
-    nlist=$( seq $npmin $npmax )
+    [ $npwant -eq 0 ] && npwant=$npmax
+    nlist=$( seq $npmin $npwant )
     nprocs="0 1 $nlist"
   elif [ $nptype = "npmax" ]; then
     nprocs=$( seq 0 $cpus )
@@ -250,8 +258,10 @@ SetProcs()
 
   nprocs=$( echo $nprocs | tr '\n' ' ' )	#get rid of newlines
 
-  echo "cpus: $cpus"
-  echo "nprocs: $nprocs"
+  echo "cpus available: $cpus"
+  echo "nprocs max: $npmax"
+  echo "nprocs want: $npwant"
+  echo "nprocs used: $nprocs"
   #exit 0
 }
 
@@ -261,8 +271,10 @@ Info()
   local shybin
 
   echo "what: $what"
-  echo "cpus: $cpus"
-  echo "nprocs: $nprocs"
+  echo "cpus available: $cpus"
+  echo "nprocs max: $npmax"
+  echo "nprocs want: $npwant"
+  echo "nprocs used: $nprocs"
   echo "nodes: $nodes"
   echo "basins: $basins"
   echo "simname: $simname"

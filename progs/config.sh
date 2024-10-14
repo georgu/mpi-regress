@@ -44,8 +44,20 @@ elif [ $hostname = "stream" ]; then
 
   npmax=16
 
+elif [ $hostname = "tide" ]; then
+
+  repodir="$HOME/georg/work/shyfem_repo"
+
+  shydir_serial="$repodir/shyfemcm-ismar"
+  shydir_mpi="$repodir/shyfemcm-ismar"
+  shyfem_serial="$shydir_mpi/bin/shyfem"
+  shyfem_mpi="$shydir_mpi/bin/shyfem"
+  check_debug="$repodir/shyfemcm-ismar/bin/check_shympi_debug"
+
+  npmax=32
+
 else
-  echo "*** no entry for hostname found: $hostname ...aborting"
+  echo "*** no entry found in config.sh for hostname: $hostname ...aborting"
   exit 1
 fi
 
