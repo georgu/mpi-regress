@@ -45,7 +45,7 @@ regress_long: debug_long compare
 regress_short: debug_short compare
 
 run: cleanrun
-	./run_test.sh -run $(STR)
+	./run_test.sh -run -npwant $(npwant) $(STR)
 
 debug_long: cleanrun
 	./run_test.sh -run -debug -long -npwant $(npwant) $(STR)

@@ -238,6 +238,7 @@ SetProcs()
     [ -z "$npmax" ] && npmax=$cpus
     [ $npmax -gt $cpus ] && npmax=$cpus
     [ $npwant -eq 0 ] && npwant=$npmax
+    [ $npwant -gt $npmax ] && npwant=$npmax
     nlist=$( seq $npmin $npwant )
     nprocs="0 1 $nlist"
   elif [ $nptype = "npmax" ]; then
