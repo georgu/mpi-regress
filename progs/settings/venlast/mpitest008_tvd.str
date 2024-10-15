@@ -1,0 +1,131 @@
+
+#---------------------------------------------------------
+please change dsl and wind files, title and sim name
+maybe also iwtype
+#---------------------------------------------------------
+
+$title
+	simulations for plume - 2010 tide
+	mpi_test
+	venlag62u
+$end
+
+17107200	17/07/2004
+17193600	18/07/2004
+17280000	19/07/2004
+
+$para
+	itanf = 0
+	itend = 43200
+	idt = 300 
+
+	idtout = 3600  itmout = 0
+	idtcon = 3600  itmcon = 0
+	idtext = 300  itmext = 0
+	idtflx = 300  itmflx = 0
+	idtdbg = 3600
+
+	date = 0
+	itsplt = 2   idtsyn = 3600
+
+	ireib = 2   czdef = 30.
+	iwtype = 3	dragco = 0.
+
+	icor = 2   dlat = 45.
+
+	href = 0.23     iczv = 1
+	ampar = 0.60   azpar = 0.60
+	ahpar = 0.2    idhtyp = 2
+
+        aapar = 0.
+        iconz = 1        conref = 1.
+	ibarcl = 1
+
+	iturb = 1
+        diftur = 1.e-2   vistur = 1.e-2
+
+	nsigma = 10      hmin = 1.
+	itvd = 2
+$end
+
+levels
+ 1 2 3 4 5 6 7 8 9 10 12 15 18 22 25 30 35 40 45 50
+end
+
+$bound1     ---- chioggia ----
+	kbound = 150 173 172 151
+	boundn = 'data/lido.dat'
+	ibtyp  = 1
+$end
+
+$bound2    ---- malamocco ----
+	kbound = 4311 4315 4314 4309
+	boundn = 'data/mala.dat'
+	ibtyp  = 1
+$end
+
+$bound3   ---- lido ----
+	kbound = 2750 2757 2758 2751
+	boundn = 'data/chio.dat'
+	ibtyp  = 1
+$end
+
+dsl  pts  btz  cfg  pbo  vgr  tso  fus  pov  ser  tre  gbo  vdg  lsl
+2750 2449 19   919  533  1385 936  2174 2032 3140 3342 4086 4343 3971
+
+  ps  chio  bura  S.ERASMO
+2449   392  3191  3267
+
+$extra 
+	2750 4311 150 2449 392 3191 3267
+$end
+
+flux
+        2750 2757 2758 2751 0
+        4311 4315 4314 4309 0
+         150  173  172  151 0
+end
+
+
+0  lagoon   1  barene    2  channels 
+3  chioggia 4  malamocco 5  lido
+6  treporti 7  la salina 8  burano
+
+$area
+
+         0  30.
+         1  36.
+         2  27.
+         3  38.  19.   173   175
+         4  30.  17.  4314  4313
+         5  30.  20.  2757  2759
+         6  46.
+         7  20.
+         8  36.
+         9  36.  42.   2758   2760
+	10  30.
+	11  30.
+	12  30.
+
+$end
+
+         0  30.
+         1  30.
+         2  30.
+         3  30.  19.   173   175
+         4  30.  17.  4314  4313
+         5  30.  20.  2757  2759
+         6  42.
+         7  36.
+         8  36.
+         9  30.  20.  2758  2760
+	10  30.
+	11  30.
+	12  30.
+
+
+$name
+	gotmpa = 'data/gotmturb.nml'
+$end
+	wind = 'wind.dat'
+

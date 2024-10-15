@@ -7,6 +7,13 @@ medi2d
 medimms
 venlast
 vistula
+!progs/settings/cucco
+!progs/settings/goro
+!progs/settings/marmenor
+!progs/settings/medi2d
+!progs/settings/medimms
+!progs/settings/venlast
+!progs/settings/vistula
 vistula-restart
 regression.log
 .bash_eternal_history

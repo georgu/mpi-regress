@@ -1,0 +1,166 @@
+--------------------------------------------------------
+                  SECTION rea_ERA5_IBI_twl_wave_000
+--------------------------------------------------------
+$title
+       Mediterranean reanalysis 
+       rea_ERA5_IBI_twl_2016 
+       medi_163153_c
+$end
+
+--------------------------------------------------------
+                SECTION PARAMETER
+--------------------------------------------------------
+$para
+       date = '2015-12-31::00:00'
+
+       itanf = 0
+       itend = 10800
+       idt   = 100
+       idtdbg = 3600
+
+       itmext = '2015-12-31::00:00'
+       idtext = '30m'
+       itmout = '2015-12-31::00:00'
+       idtout = '60m'
+
+
+       itmrst = '2016-12-31::00:00'
+       idtrst = '30d'
+
+       ilin   = 0	itlin  = 0      iclin  = 0
+       itsplt = 2	coumax = 0.9    idtsyn = '15m'
+       ampar  = 0.60	azpar  = 0.60   aapar  = 0.
+
+       icor   = 1	isphe  = 1
+       idhtyp = 2	ahpar  = 0.2	dhpar = 0.2
+
+	rtide  = 1	ltidec = 7.5e-05
+
+       ireib  = 5	czdef  = 0.0025
+       iwtype = 1	itdrag = 2	dragco = 0.0025
+
+       hlvmin = 0.0	href   = 0.0
+
+       nomp   = 1
+	itvd = 2
+$end
+
+--------------------------------------------------------
+                  SECTION WAVES
+--------------------------------------------------------
+waves
+        iwave  = 2      	dtwave = '15m'
+        itmwav = '2016-01-01::00:00'	idtwav = '60m'
+end
+
+--------------------------------------------------------
+                SECTION BOUNDARY
+--------------------------------------------------------
+$bound1       -----ATLANTIC OCEAN------
+       kbound = 286 18331 18332 18333 18334 18335 18336 
+                18337 18338 18339 18340 18341 18342 18343 
+                18344 18345 18346 18347 18348 18349 18350 
+                18351 18352 18353 18354 18355 18356 18357 
+                18358 18359 18360 18361 287
+       ibtyp  = 1
+       boundn = 'input/lateral_bc.fem'
+       vel3dn = 'input/vel_lateral_bc.fem'
+       tnudge = 600
+$end
+
+--------------------------------------------------------
+           SECTION EXTRA 
+--------------------------------------------------------
+$extra
+        16543 'Trieste'
+        23835 'Piattaforma_CNR'
+        59800 'Venezia'
+        16319 'Ravenna'
+        16896 'Ancona'
+	16940 'S_Benedetto'
+	16981 'Ortona'
+        17069 'Vieste'
+        17146 'Bari'
+        17246 'Otranto'
+        15955 'Gibraltar'
+        15895 'Malaga'
+        13030 'B_Hoceima'
+        15798 'Almeria'
+        33684 'Alicante'
+        1190  'Palma'
+        15242 'Banyuls'
+        15015 'Marseille'
+        12428 'Skikda'
+        20714 'Porto_Maurizio'
+        6706  'Carloforte'
+        14773 'Genova'
+        7053  'Cagliari'
+        76022 'La_Spezia'
+        11876 'Gabes'
+        14675 'Livorno'
+        84204 'Sfax'
+        11798 'Zarzis'
+        14539 'Civitavecchia'
+        5974  'Panteleria'
+        62363 'Lampedusa'
+        25768 'Mazzara_Vallo'
+        76306 'SG'
+        11672 'Tripoli'
+        6380  'Palermo'
+        6241  'P_Empedocle'
+        6589  'Ischia'
+        14384 'Napoli'
+        6032  'Malta'
+        18105 'Bakar'
+        6553  'Lipari'
+        6085  'Catania'
+        31017 'Capo_Passero'
+        6481  'Milazzo'
+        14136 'Reggio_Calabria'
+        1988  'Santadrea_Is'
+        17794 'Split'
+        13894 'Taranto'
+        17470 'Bar'
+        16    'Lefkas'
+        13347 'Katakolo'
+        13244 'Kalamata'
+        8029  'Thessaloniki'
+        69987 'Tobruch'
+        5450  'Souda'
+        4960  'Syros'
+        5511  'Iraklion'
+        8432  'Alexandroupolis'
+        76023 'Portobardia'
+        3410  'Chios'
+        3677  'Leros'
+        4002  'Rodos'
+        10624 'Alexandria'
+        10482 'Port_Said'
+        648   'Kyreni'
+        446   'Famagusta'
+$end
+         'Rovinj'
+         'Mali_Losinj'
+         'Zadar'
+         'Vis'
+         'Ploce'
+         'Dubrovnik'
+         'Gabes'
+	 'Sidra1'
+	 'Sidra2'
+	 'HerodotusB'
+	 'Haifa'
+
+--------------------------------------------------------
+           SECTION FLUX
+--------------------------------------------------------
+flux
+end
+
+--------------------------------------------------------
+           SECTION NAME
+--------------------------------------------------------
+$name
+       restrt = ''
+       wind = 'input/meteo.fem'
+$end

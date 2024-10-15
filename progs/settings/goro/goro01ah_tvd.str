@@ -1,0 +1,203 @@
+--------------------------------------------------------
+                  SECTION TITLE
+--------------------------------------------------------
+
+$title
+        Po delta and ER coast
+        goro
+	deltapo_ER_81879_g22_po22
+$end
+
+--------------------------------------------------------
+                SECTION PARAMETER
+--------------------------------------------------------
+
+$para
+        itmrst = '1997-11-01::12:00:00' idtrst = '1M'
+        itrst  = '1997-11-01::12:00:00' ityrst = 1
+
+        itanf = 0
+	itend = 3600
+	idtdbg = 300
+	idtbox = 300
+
+        itmout = '1997-11-01::12:00:00' idtout = '1h'
+        itmflx = '1997-11-01::12:00:00' idtflx = '1h'
+        itmext = '1997-11-01::12:00:00' idtext = '1h'
+        itmcon = '1997-11-01::12:00:00' idtcon = '1h'
+
+        date   = '1997-11-01::12:00:00' time   = 000000
+
+        idt = '100s'    idtmin = 0.1
+
+        ilin   = 0      itlin  = 0      iclin  = 0
+        itsplt = 3      coumax = 0.90   idtsyn = '1h'
+
+        ampar = 0.60    azpar = 0.60
+	ahpar = 0.2     idhtyp = 2
+        icor   = 1      isphe = 1
+
+        ireib  = 6      czdef  = 0.006
+        iwtype = 1      itdrag = 4      dragco = 0.00250
+
+        ibarcl = 1      iturb = 1       ievap = 0
+        itvd   = 2      itvdv = 0       idhtyp = 2
+
+        isalt  = 1      shpar  = 0.2    salref = 30
+        itemp  = 1      thpar  = 0.2    temref = 10
+        iconz  = 0      conref = 0      chpar  = 0.1
+        iheat  = 6      hdecay = 2      botabs = 0
+
+        ilytyp = 3      hlvmin = 0.5    ihtype = 3      hmin = 1.
+
+        nomp   = 4
+$end
+
+--------------------------------------------------------
+                  SECTION LEVELS
+--------------------------------------------------------
+$levels
+        1.5 2.0 2.5 3.0 3.5 4.0 4.5 5 6 7 8 9 10
+        12 14 16 18 20 22 24 26 30 34 40 45 50 55
+$end
+
+--------------------------------------------------------
+                  SECTION BOUNDARY
+--------------------------------------------------------
+
+$bound1     ----  OPEN SEA BOUNDARY south to north 125 NODES ----
+        kbound =  81430 81941 81942 81943 81944 81945 81946 81947
+                81948 81949 81950 81951 81952 81953 81954 81431
+                82084 82083 82082 82081 82080 82079 82078 82077
+                82076 82075 82074 82073 82072 82071 82070 82069
+                82068 82067 82066 82065 82064 82063 82062 82061
+                82060 82059 82058 82057 82056 82055 82054 82053
+                82052 82051 82050 82049 82048 82047 82046 82045
+                82044 82043 82042 82041 82040 82039 82038 82037
+                82036 82035 82034 82033 82032 82031 82030 82029
+                82028 82027 82026 82025 82024 82023 82022 82021
+                82020 82019 82018 82017 82016 82015 82014 82013
+                82012 82011 82010 82009 82008 82007 82006 82005
+                82004 82003 82002 82001 82000 81999 81998 81997
+                81996 81995 81994 81993 81434 81969 81968 81967
+                81966 81965 81964 81963 81962 81961 81960 81959
+                81958 81957 81956 81955 26398
+        ibtyp  = 1
+        saltn  = 'input/1998_salt.fem'
+        tempn  = 'input/1998_temp.fem'
+        boundn = 'input/1998_mslv.fem'
+        vel3dn = 'input/1998_vels.fem'
+        tnudge = 1800
+$end
+
+$bound2     ----  PO a Pontelagoscuro  ----
+        kbound = 39140 39141 39142
+        ibtyp  = 2
+        salt   = 1
+        boundn = 'input/1998_po_pontelagoscuro.fem'
+	tempn  = 'input/1998_po_pontelagoscuro_temp.fem'
+$end
+
+$bound3    ----  ADIGE  ----
+        kbound = 34137 34136
+        ibtyp  = 2
+        salt = 1
+        boundn = 'input/1998_adige.fem'
+	tempn  = 'input/1998_adige_temp.fem'
+$end
+
+$bound4     ---- Po di Levante ----
+        kbound = 25902 25888 25840 25903
+        ibtyp  = 2
+        salt   = 1
+        boundn = 'input/1998_po_levante.fem'
+	tempn  = 'input/1998_po_levante_temp.fem'
+$end
+
+$bound5    ---- Fiume Marecchia ----
+        kbound = 81709 81711
+        ibtyp  = 2
+        salt = 1
+        boundn = 'input/1998_marecchia.fem'
+	tempn  = 'input/1998_marecchia_temp.fem'
+$end
+
+$bound6    ---- Fiume Rubicone ----
+        kbound = 81650 81651
+        ibtyp  = 2
+        salt = 1
+        boundn = 'input/1998_rubicone.fem'
+	tempn  = 'input/1998_rubicone_temp.fem'
+$end
+
+$bound7    ---- Fiume Savio ----
+        kbound = 81556 81562
+        ibtyp  = 2
+        salt = 1
+        boundn = 'input/1998_savio.fem'
+	tempn  = 'input/1998_savio_temp.fem'
+$end
+
+$bound8     ---- Fiumi Uniti ----
+        kbound = 81510 81512
+        ibtyp  = 2
+        salt = 1
+        boundn = 'input/1998_uniti.fem'
+	tempn  = 'input/1998_uniti_temp.fem'
+$end
+
+$bound9    ---- Fiume Uso ----
+        kbound = 81667 81668
+        ibtyp  = 2
+        salt = 1
+        boundn = 'input/1998_uso.fem'
+	tempn  = 'input/1998_uso_temp.fem'
+$end
+
+$bound10     ---- Po di Volano ----
+        kbound = 35124 35123
+        ibtyp  = 2
+        salt = 1
+        boundn = 'input/1998_po_volano.fem'
+	tempn  = 'input/1998_po_volano_temp.fem'
+$end
+
+$bound11    ---- Reno ----
+        kbound = 88780 88767
+        ibtyp  = 2
+        salt = 1
+        boundn = 'input/1998_reno.fem'
+	tempn  = 'input/1998_reno_temp.fem'
+$end
+
+$bound12    ---- Lamone ----
+        kbound = 88793 88785
+        ibtyp  = 2
+        salt = 1
+        boundn = 'input/1998_lamone.fem'
+	tempn  = 'input/1998_lamone_temp.fem'
+$end
+
+--------------------------------------------------------
+           SECTION FILE AND DIR NAME
+--------------------------------------------------------
+
+$name
+        gotmpa = 'gotmturb.nml'
+        wind   = 'input/1998_wind.fem'
+        rain   = 'input/1998_rain.fem'
+        qflux  = 'input/1998_heat.fem'
+$end
+        restrt = 'deltapo.rst'
+
+--------------------------------------------------------
+           SECTION NODE TIME SERIES
+--------------------------------------------------------
+$extra
+        34920   'Gorino'
+        34139   'Manufatto'
+        36539   'Mitili'
+        84643   'Nausicaa'
+        81894   'Porto Garibaldi'
+        35191   'Venus'
+$end
