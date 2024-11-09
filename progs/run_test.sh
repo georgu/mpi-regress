@@ -325,7 +325,7 @@ PrepareBasins()
     [ -f $basin.bas ] && continue
     #mpi_basin.sh $np $basin.grd
     echo "preparing basin $basin"
-    $shydir_mpi/bin/shypre -noopti -silent $basin.grd
+    $shydir_mpi/bin/shypre -silent $basin.grd
     [ $? -ne 0 ] && echo "error creating basin $basin" && exit 1
   done
   export SHYFEMDIR=$shydir_serial
