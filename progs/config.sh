@@ -6,7 +6,7 @@
 
 [ -z "$hostname" ] && hostname=$( hostname )
 
-echo "configuring mpi_regress for $hostname"
+echo "running config.sh for $hostname"
 
 if [ $hostname = "Caesium" ]; then
 
@@ -37,7 +37,7 @@ elif [ $hostname = "stream" ]; then
   repodir="$HOME/georg/work/shyfem_repo"
 
   shydir_serial="$repodir/shyfemcm-ismar"
-  shydir_mpi="$repodir/shyfemcm-ismar-mpi"
+  shydir_mpi="$repodir/shyfemcm-ismar"
   shyfem_serial="$shydir_mpi/bin/shyfem"
   shyfem_mpi="$shydir_mpi/bin/shyfem"
   check_debug="$repodir/shyfem/bin/check_shympi_debug"

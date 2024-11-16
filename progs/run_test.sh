@@ -41,14 +41,14 @@ nptype="npmax"
 #npmin=10
 #npmin=11
 #npmax=20
-npmax=16
+#npmax=16
 #npmax=11
 #npmax=4
-npmax=32
-npmax=64
-npmax=128
-npmax=32
-npmax=8
+#npmax=32
+#npmax=64
+#npmax=128
+#npmax=32
+#npmax=8
 
 hostname=$( hostname )
 
@@ -325,7 +325,7 @@ PrepareBasins()
     [ -f $basin.bas ] && continue
     #mpi_basin.sh $np $basin.grd
     echo "preparing basin $basin"
-    $shydir_mpi/bin/shypre -silent $basin.grd
+    $shydir_mpi/bin/shypre -silent -noopti $basin.grd
     [ $? -ne 0 ] && echo "error creating basin $basin" && exit 1
   done
   export SHYFEMDIR=$shydir_serial

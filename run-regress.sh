@@ -8,10 +8,6 @@ regdirs="medimms medi2d vistula venlast marmenor cucco goro"
 stop_on_error="YES"
 stop_on_error="NO"
 errors=0
-npmax=64
-npmax=4
-#npmax=8
-#npmax=12
 
 hostname=$( hostname )
 
@@ -28,21 +24,16 @@ partition_script=$progsdir/test_partition.sh
 
 export LOG=$basedir/regression.log
 
-shyfemdir=$HOME/work/shyfem_repo/shyfemcm
-[ $hostname = "Caesium" ] && shyfemdir=$HOME/work/shyfem_repo/shyfemcm
-[ $hostname = "tide" ] && shyfemdir=$HOME/georg/work/shyfem_repo/shyfemcm-ismar
+. $progsdir/config.sh
 
+shyfemdir=$shydir_mpi
 if [ ! -d $shyfemdir ]; then
   echo "cannot find shyfem directory: $shyfemdir"
   exit 1
 fi
-
 bindir=$shyfemdir/bin
 
-. $progsdir/config.sh
 . $bindir/colors.sh
-
-npmax=4
 
 #----------------------------------------------------
 
