@@ -21,6 +21,7 @@ $para
 	ahpar = 0.2    idhtyp = 2
 
 	itvd = 2
+	pqual = 100
 $end
 
 $name

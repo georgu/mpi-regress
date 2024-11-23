@@ -15,7 +15,6 @@ vistula
 !progs/settings/venlast
 !progs/settings/vistula
 vistula-restart
-regression.log
 .bash_eternal_history
 .*.swp
 *.log

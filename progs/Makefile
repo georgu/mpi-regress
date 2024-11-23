@@ -121,6 +121,8 @@ cleanall: clean
 	-rm -f part_error[12].grd
 	-rm -f *.bas.[0-9]*.node.grd
 	-rm -f *.bas.[0-9]*.elem.grd
+	-rm -f *.elem.grd
+	-rm -f *.node.grd
 	-rm -f logfile.txt
 	-rm -f boxes_*.txt
 	-rm -f dbg-command.sh run-command.sh
@@ -128,7 +130,7 @@ cleanall: clean
 cleantotal: cleanall
 	@echo "cleaning dirs: $(MPIDIRS)"
 	-rm -rf $(MPIDIRS)
-	-rm -f shyfem shyfem-mpi
+	-rm -f shyfem shyfem-mpi shyfem-serial
 
 zip: cleantotal
 	-zip -r $(DIR).zip *

@@ -78,7 +78,7 @@ do
     file2=$settdir/$dir/$file
     CheckExist $file2
     [ $? -ne 0 ] && continue
-    #CheckDiff $file $file2
+    #CheckDiff $file $file2		# already checked above
   done
   rm -f log.log
   cd ..
